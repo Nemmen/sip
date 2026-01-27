@@ -1,3 +1,7 @@
+// Export all enums
+export * from './enums';
+export * from './dto';
+
 // User & Auth Types
 export enum UserRole {
     STUDENT = 'STUDENT',

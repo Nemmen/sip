@@ -98,6 +98,47 @@ export class ApplicationsService {
         });
     }
 
+    async findOne(id: string, userId: string) {
+        const application = await this.prisma.application.findUnique({
+            where: { id },
+            include: {
+                student: {
+                    select: {
+                        id: true,
+                        email: true,
+                        studentProfile: true,
+                    },
+                },
+                internship: {
+                    include: {
+                        employer: {
+                            select: {
+                                id: true,
+                                email: true,
+                                employerProfile: true,
+                            },
+                        },
+                    },
+                },
+            },
+        });
+
+        if (!application) {
+            throw new NotFoundException('Application not found');
+        }
+
+        // Verify user has access (student who applied or employer who posted internship)
+        const hasAccess = 
+            application.studentId === userId || 
+            application.internship.employerId === userId;
+
+        if (!hasAccess) {
+            throw new NotFoundException('Application not found');
+        }
+
+        return application;
+    }
+
     async withdraw(id: string, studentId: string) {
         const application = await this.prisma.application.findUnique({
             where: { id },

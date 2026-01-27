@@ -41,6 +41,12 @@ export class ApplicationsController {
         return this.applicationsService.findInternshipApplications(internshipId);
     }
 
+    @Get(':id')
+    @ApiOperation({ summary: 'Get application by ID' })
+    async getOne(@Param('id') id: string, @CurrentUser() user: any) {
+        return this.applicationsService.findOne(id, user.userId);
+    }
+
     @Put(':id/status')
     @UseGuards(RolesGuard)
     @Roles('EMPLOYER')

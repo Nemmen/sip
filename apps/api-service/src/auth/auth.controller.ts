@@ -6,6 +6,7 @@ import {
     HttpStatus,
     UseGuards,
     Req,
+    BadRequestException,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
@@ -32,11 +33,11 @@ export class AuthController {
 
     @Post('refresh')
     @HttpCode(HttpStatus.OK)
-    @ApiOperation({ summary: 'Refresh access token' })
-    async refresh(@Body() body: { refreshToken: string }) {
-        // Extract userId from token
-        // This is simplified - in production, properly validate refresh token
-        return { message: 'Token refresh' };
+    @ApiOperation({ summary: 'Refresh access token using refresh token' })\n    async refresh(@Body() body: { refreshToken: string }) {
+        if (!body.refreshToken) {
+            throw new BadRequestException('Refresh token is required');
+        }
+        return this.authService.refreshToken(body.refreshToken);
     }
 
     @Post('logout')

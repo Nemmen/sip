@@ -3,6 +3,7 @@ import {
     Get,
     Post,
     Put,
+    Patch,
     Delete,
     Body,
     Param,
@@ -22,6 +23,16 @@ import { CurrentUser } from '../auth/decorators/current-user.decorator';
 export class InternshipsController {
     constructor(private internshipsService: InternshipsService) { }
 
+    // Specific routes MUST come before parameterized routes
+    @Get('employer/my-internships')
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles('EMPLOYER')
+    @ApiBearerAuth()
+    @ApiOperation({ summary: 'Get employer\'s internships' })
+    async getMyInternships(@CurrentUser() user: any) {
+        return this.internshipsService.getEmployerInternships(user.userId);
+    }
+
     @Get()
     @ApiOperation({ summary: 'Get all published internships' })
     async findAll(@Query() query: any) {
@@ -33,7 +44,17 @@ export class InternshipsController {
     async findOne(@Param('id') id: string) {
         return this.internshipsService.findOne(id);
     }
-
+    @Get(':id/applications')
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles('EMPLOYER')
+    @ApiBearerAuth()
+    @ApiOperation({ summary: 'Get applications for internship' })
+    async getInternshipApplications(
+        @Param('id') id: string,
+        @CurrentUser() user: any
+    ) {
+        return this.internshipsService.getApplicationsForInternship(id, user.userId);
+    }
     @Post()
     @UseGuards(JwtAuthGuard, RolesGuard, KYCGuard)
     @Roles('EMPLOYER')
@@ -65,6 +86,19 @@ export class InternshipsController {
         return this.internshipsService.publish(id, user.userId);
     }
 
+    @Patch(':id')
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles('EMPLOYER')
+    @ApiBearerAuth()
+    @ApiOperation({ summary: 'Update internship' })
+    async update(
+        @Param('id') id: string,
+        @Body() updateData: any,
+        @CurrentUser() user: any
+    ) {
+        return this.internshipsService.update(id, updateData, user.userId);
+    }
+
     @Put(':id/close')
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles('EMPLOYER')
@@ -81,14 +115,5 @@ export class InternshipsController {
     @ApiOperation({ summary: 'Delete internship' })
     async delete(@Param('id') id: string, @CurrentUser() user: any) {
         return this.internshipsService.delete(id, user.userId);
-    }
-
-    @Get('employer/my-internships')
-    @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles('EMPLOYER')
-    @ApiBearerAuth()
-    @ApiOperation({ summary: 'Get employer\'s internships' })
-    async getMyInternships(@CurrentUser() user: any) {
-        return this.internshipsService.getEmployerInternships(user.userId);
     }
 }

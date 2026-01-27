@@ -133,9 +133,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const logout = async () => {
         try {
-            await apiClient.post('/auth/logout');
+            // Optional: Call backend logout endpoint (fails silently if not implemented)
+            await apiClient.post('/auth/logout').catch(() => {});
         } catch (error) {
-            console.error('Logout error:', error);
+            // Ignore logout API errors
         } finally {
             setUser(null);
             setAccessToken(null);

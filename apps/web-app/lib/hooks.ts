@@ -69,6 +69,9 @@ export function useInternships(filters?: {
     return { internships, loading, error, refetch: fetchInternships };
 }
 
+// Re-export employer-specific hook
+export { useEmployerInternships } from './hooks/useEmployerInternships';
+
 // Applications hook with real-time updates
 export function useApplications() {
     const [applications, setApplications] = useState<any[]>([]);

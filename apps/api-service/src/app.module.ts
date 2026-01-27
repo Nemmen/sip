@@ -17,6 +17,7 @@ import { AuditModule } from './audit/audit.module';
 import { StorageModule } from './storage/storage.module';
 import { QueueModule } from './queue/queue.module';
 import { WebsocketModule } from './websocket/websocket.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
     imports: [
@@ -57,6 +58,7 @@ import { WebsocketModule } from './websocket/websocket.module';
         StorageModule,
         QueueModule,
         WebsocketModule,
+        AdminModule,
     ],
 })
 export class AppModule { }

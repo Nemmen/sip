@@ -1,13 +1,17 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
-import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { LoadingSpinner } from '@/components/ui/Loading';
-import Link from 'next/link';
 import { RouteGuard } from '@/components/RouteGuard';
-import apiClient from '@/lib/api';
+import { StatCard } from '@/components/ui/StatCard';
+import { StatusBadge } from '@/components/ui/StatusBadge';
+import { UserAvatar } from '@/components/ui/UserAvatar';
+import { FilterBar } from '@/components/ui/FilterBar';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { adminApi } from '@/lib/api';
 
 export default function AdminUsersPage() {
   return (
@@ -18,9 +22,11 @@ export default function AdminUsersPage() {
 }
 
 function AdminUsersContent() {
+  const router = useRouter();
   const [users, setUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('ALL');
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     loadUsers();
@@ -29,9 +35,12 @@ function AdminUsersContent() {
   const loadUsers = async () => {
     try {
       setLoading(true);
-      const { data } = await apiClient.get('/users');
-      const filtered = filter === 'ALL' ? data : data.filter((u: any) => u.role === filter);
-      setUsers(filtered);
+      const params: any = {};
+      if (filter !== 'ALL') {
+        params.role = filter;
+      }
+      const { data } = await adminApi.users.getAll(params).catch(() => ({ data: { data: [] } }));
+      setUsers(data.data || data || []);
     } catch (error) {
       console.error('Failed to load users:', error);
     } finally {
@@ -39,76 +48,191 @@ function AdminUsersContent() {
     }
   };
 
+  // Only filter by search query client-side, role filtering is done server-side
+  const filteredUsers = (users || []).filter((user: any) => {
+    const matchesSearch = !searchQuery ||
+      user.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.studentProfile?.fullName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.companyProfile?.companyName?.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesSearch;
+  });
+
+  const stats = {
+    total: users.length,
+    students: users.filter((u: any) => u.role === 'STUDENT').length,
+    employers: users.filter((u: any) => u.role === 'EMPLOYER').length,
+    admins: users.filter((u: any) => u.role === 'ADMIN').length,
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-[var(--background)]">
-      <header className="bg-white border-b border-[var(--border)]">
-        <div className="container-custom py-4">
-          <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-[var(--primary)]">User Management</h1>
-            <Link href="/admin/dashboard">
-              <Button variant="outline" size="sm">← Dashboard</Button>
-            </Link>
-          </div>
-        </div>
-      </header>
-
-      <div className="container-custom py-8">
-        <div className="flex gap-2 mb-6">
-          <Button variant={filter === 'ALL' ? 'primary' : 'outline'} onClick={() => setFilter('ALL')}>
-            All
-          </Button>
-          <Button variant={filter === 'STUDENT' ? 'primary' : 'outline'} onClick={() => setFilter('STUDENT')}>
-            Students
-          </Button>
-          <Button variant={filter === 'EMPLOYER' ? 'primary' : 'outline'} onClick={() => setFilter('EMPLOYER')}>
-            Employers
-          </Button>
-          <Button variant={filter === 'ADMIN' ? 'primary' : 'outline'} onClick={() => setFilter('ADMIN')}>
-            Admins
-          </Button>
-        </div>
-
-        <Card>
-          <CardContent>
-            {loading ? (
-              <div className="flex justify-center py-12">
-                <LoadingSpinner />
+    <div className="p-6 max-w-7xl mx-auto">
+      {/* Header */}
+      <div className="mb-6">
+        <Button 
+          variant="ghost" 
+          onClick={() => router.push('/admin/dashboard')}
+          className="mb-4"
+        >
+          ← Back to Dashboard
+        </Button>
+        
+        <Card className="bg-gradient-to-r from-purple-600 to-pink-700 text-white border-0">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-3xl font-bold mb-2">User Management 👥</h1>
+                <p className="text-purple-100 text-lg">
+                  {stats.total} total users on the platform
+                </p>
               </div>
-            ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b">
-                      <th className="text-left p-3">Name</th>
-                      <th className="text-left p-3">Email</th>
-                      <th className="text-left p-3">Role</th>
-                      <th className="text-left p-3">KYC Status</th>
-                      <th className="text-left p-3">Joined</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {users.map((user: any) => (
-                      <tr key={user.id} className="border-b hover:bg-gray-50">
-                        <td className="p-3">
-                          {user.role === 'STUDENT' 
-                            ? user.studentProfile?.fullName 
-                            : user.companyProfile?.companyName || 'N/A'}
-                        </td>
-                        <td className="p-3">{user.email}</td>
-                        <td className="p-3">
-                          <Badge variant="info">{user.role}</Badge>
-                        </td>
-                        <td className="p-3">{user.kycStatus}</td>
-                        <td className="p-3">{new Date(user.createdAt).toLocaleDateString()}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
+            </div>
           </CardContent>
         </Card>
       </div>
+
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <StatCard
+          title="Total Users"
+          value={stats.total}
+          icon={
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+          }
+        />
+        <StatCard
+          title="Students"
+          value={stats.students}
+          icon={
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+            </svg>
+          }
+        />
+        <StatCard
+          title="Employers"
+          value={stats.employers}
+          icon={
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+          }
+        />
+        <StatCard
+          title="Admins"
+          value={stats.admins}
+          icon={
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+          }
+        />
+      </div>
+
+      {/* Filters */}
+      <Card className="mb-6">
+        <CardContent className="p-6">
+          <FilterBar
+            filters={[
+              {
+                type: 'search',
+                placeholder: 'Search users by name or email...',
+                value: searchQuery,
+                onChange: setSearchQuery,
+              },
+              {
+                type: 'select',
+                label: 'Role',
+                value: filter,
+                onChange: setFilter,
+                options: [
+                  { label: 'All Roles', value: 'ALL' },
+                  { label: 'Students', value: 'STUDENT' },
+                  { label: 'Employers', value: 'EMPLOYER' },
+                  { label: 'Admins', value: 'ADMIN' },
+                ],
+              },
+            ]}
+          />
+        </CardContent>
+      </Card>
+
+      {/* Users Table */}
+      {filteredUsers.length > 0 ? (
+        <Card>
+          <CardContent className="p-0">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="text-left p-4 font-semibold text-gray-700">User</th>
+                    <th className="text-left p-4 font-semibold text-gray-700">Email</th>
+                    <th className="text-left p-4 font-semibold text-gray-700">Role</th>
+                    <th className="text-left p-4 font-semibold text-gray-700">KYC Status</th>
+                    <th className="text-left p-4 font-semibold text-gray-700">Joined</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredUsers.map((user: any) => (
+                    <tr key={user.id} className="border-t border-gray-200 hover:bg-gray-50 transition">
+                      <td className="p-4">
+                        <div className="flex items-center gap-3">
+                          <UserAvatar
+                            name={user.role === 'STUDENT' 
+                              ? user.studentProfile?.fullName 
+                              : user.companyProfile?.companyName}
+                            email={user.email}
+                            size="md"
+                          />
+                          <div>
+                            <p className="font-medium text-gray-900">
+                              {user.role === 'STUDENT' 
+                                ? user.studentProfile?.fullName || 'No Name' 
+                                : user.companyProfile?.companyName || 'No Company'}
+                            </p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="p-4 text-gray-700">{user.email}</td>
+                      <td className="p-4">
+                        <StatusBadge status={user.role === 'STUDENT' ? 'SUBMITTED' : user.role === 'EMPLOYER' ? 'UNDER_REVIEW' : 'APPROVED'} size="sm" />
+                      </td>
+                      <td className="p-4">
+                        <StatusBadge status={user.kycStatus || 'PENDING'} size="sm" />
+                      </td>
+                      <td className="p-4 text-gray-700">{new Date(user.createdAt).toLocaleDateString()}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </CardContent>
+        </Card>
+      ) : (
+        <EmptyState
+          icon={
+            <svg className="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+          }
+          title="No users found"
+          description="No users match your search criteria"
+          action={{
+            label: "Clear Filters",
+            onClick: () => { setSearchQuery(''); setFilter('ALL'); }
+          }}
+        />
+      )}
     </div>
   );
 }

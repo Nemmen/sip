@@ -17,15 +17,16 @@ export class UsersController {
         return this.usersService.findById(user.userId);
     }
 
-    @Put('profile/student')
-    @ApiOperation({ summary: 'Update student profile' })
-    async updateStudentProfile(@CurrentUser() user: any, @Body() data: any) {
-        return this.usersService.updateStudentProfile(user.userId, data);
-    }
-
-    @Put('profile/employer')
-    @ApiOperation({ summary: 'Update employer profile' })
-    async updateEmployerProfile(@CurrentUser() user: any, @Body() data: any) {
-        return this.usersService.updateEmployerProfile(user.userId, data);
+    @Patch('me')
+    @ApiOperation({ summary: 'Update user profile' })
+    async updateProfile(@CurrentUser() user: any, @Body() data: any) {
+        // Handle both studentProfile and companyProfile in the same endpoint
+        if (data.studentProfile) {
+            return this.usersService.updateStudentProfile(user.userId, data.studentProfile);
+        }
+        if (data.companyProfile) {
+            return this.usersService.updateEmployerProfile(user.userId, data.companyProfile);
+        }
+        return this.usersService.findById(user.userId);
     }
 }

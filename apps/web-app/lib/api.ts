@@ -72,24 +72,34 @@ export const authApi = {
     getProfile: () => apiClient.get('/users/me'),
 };
 
+// Users API
+export const usersApi = {
+    getProfile: () => apiClient.get('/users/me'),
+    updateProfile: (data: any) => apiClient.patch('/users/me', data),
+};
+
 // Internships API
 export const internshipsApi = {
     getAll: (params?: any) => apiClient.get('/internships', { params }),
     getOne: (id: string) => apiClient.get(`/internships/${id}`),
     create: (data: any) => apiClient.post('/internships', data),
-    update: (id: string, data: any) => apiClient.put(`/internships/${id}`, data),
+    update: (id: string, data: any) => apiClient.patch(`/internships/${id}`, data),
     publish: (id: string) => apiClient.put(`/internships/${id}/publish`),
+    close: (id: string) => apiClient.put(`/internships/${id}/close`),
+    delete: (id: string) => apiClient.delete(`/internships/${id}`),
     getMyInternships: () => apiClient.get('/internships/employer/my-internships'),
+    getApplications: (id: string) => apiClient.get(`/internships/${id}/applications`),
 };
 
 // Applications API
 export const applicationsApi = {
     create: (data: any) => apiClient.post('/applications', data),
     getMyApplications: () => apiClient.get('/applications/my-applications'),
+    getOne: (id: string) => apiClient.get(`/applications/${id}`),
     getInternshipApplications: (internshipId: string) =>
         apiClient.get(`/applications/internship/${internshipId}`),
     updateStatus: (id: string, status: string) =>
-        apiClient.put(`/applications/${id}/status`, { status }),
+        apiClient.patch(`/applications/${id}/status`, { status }),
     withdraw: (id: string) => apiClient.put(`/applications/${id}/withdraw`),
 };
 
@@ -124,8 +134,52 @@ export const notificationsApi = {
     getAll: (unreadOnly = false) =>
         apiClient.get('/notifications', { params: { unreadOnly } }),
     getUnreadCount: () => apiClient.get('/notifications/unread-count'),
-    markAsRead: (id: string) => apiClient.put(`/notifications/${id}/read`),
-    markAllAsRead: () => apiClient.put('/notifications/read-all'),
+    markAsRead: (id: string) => apiClient.patch(`/notifications/${id}/read`),
+    markAllAsRead: () => apiClient.patch('/notifications/read-all'),
+};
+
+// Storage API
+export const storageApi = {
+    upload: (file: File) => {
+        const formData = new FormData();
+        formData.append('file', file);
+        return apiClient.post('/storage/upload', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+    },
+};
+
+// Audit API
+export const auditApi = {
+    getUserLogs: (userId: string, limit?: number) =>
+        apiClient.get(`/audit/user/${userId}`, { params: { limit } }),
+    getResourceLogs: (resource: string, resourceId: string) =>
+        apiClient.get(`/audit/resource/${resource}/${resourceId}`),
+    getMyActivity: (limit?: number) =>
+        apiClient.get('/audit/my-activity', { params: { limit } }),
+    getApplicationLogs: (applicationId: string) =>
+        apiClient.get(`/audit/application/${applicationId}`),
+};
+
+// Admin API
+export const adminApi = {
+    users: {
+        getAll: (params?: any) => apiClient.get('/admin/users', { params }),
+        suspend: (id: string) => apiClient.put(`/admin/users/${id}/suspend`),
+        activate: (id: string) => apiClient.put(`/admin/users/${id}/activate`),
+        delete: (id: string) => apiClient.delete(`/admin/users/${id}`),
+    },
+    internships: {
+        getAll: (params?: any) => apiClient.get('/admin/internships', { params }),
+    },
+    applications: {
+        getAll: (params?: any) => apiClient.get('/admin/applications', { params }),
+    },
+    kyc: {
+        getAll: (params?: any) => apiClient.get('/admin/kyc', { params }),
+    },
 };
 
 export default apiClient;

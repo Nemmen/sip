@@ -145,4 +145,32 @@ export class InternshipsService {
             orderBy: { createdAt: 'desc' },
         });
     }
+
+    async getApplicationsForInternship(id: string, employerId: string) {
+        const internship = await this.prisma.internship.findUnique({
+            where: { id },
+        });
+
+        if (!internship) {
+            throw new NotFoundException('Internship not found');
+        }
+
+        if (internship.employerId !== employerId) {
+            throw new ForbiddenException('Not authorized to view applications for this internship');
+        }
+
+        return this.prisma.application.findMany({
+            where: { internshipId: id },
+            include: {
+                student: {
+                    select: {
+                        id: true,
+                        email: true,
+                        studentProfile: true,
+                    },
+                },
+            },
+            orderBy: { createdAt: 'desc' },
+        });
+    }
 }
