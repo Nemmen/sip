@@ -41,15 +41,17 @@ function DashboardContent() {
               <h1 className="text-2xl font-bold text-[var(--primary)]">SIP</h1>
             </div>
             <div className="flex items-center gap-4">
-              <Link href="/student/notifications" className="relative">
-                <Button variant="ghost" size="sm">
-                  🔔
+              <Link href="/student/notifications">
+                <div className="relative inline-block">
+                  <Button variant="ghost" size="sm">
+                    🔔
+                  </Button>
                   {unreadCount > 0 && (
                     <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                       {unreadCount}
                     </span>
                   )}
-                </Button>
+                </div>
               </Link>
               <Link href="/student/profile">
                 <Button variant="outline" size="sm">

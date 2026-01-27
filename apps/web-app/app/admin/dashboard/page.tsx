@@ -95,15 +95,17 @@ function DashboardContent() {
               <p className="text-sm text-[var(--text-secondary)]">Platform Management</p>
             </div>
             <div className="flex items-center gap-4">
-              <Link href="/admin/notifications" className="relative">
-                <Button variant="ghost" size="sm">
-                  🔔
+              <Link href="/admin/notifications">
+                <div className="relative inline-block">
+                  <Button variant="ghost" size="sm">
+                    🔔
+                  </Button>
                   {unreadCount > 0 && (
                     <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                       {unreadCount}
                     </span>
                   )}
-                </Button>
+                </div>
               </Link>
               <Link href="/admin/profile">
                 <Button variant="outline" size="sm">

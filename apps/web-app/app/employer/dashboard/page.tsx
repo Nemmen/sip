@@ -47,15 +47,17 @@ function DashboardContent() {
               <p className="text-sm text-[var(--text-secondary)]">Employer Portal</p>
             </div>
             <div className="flex items-center gap-4">
-              <Link href="/employer/notifications" className="relative">
-                <Button variant="ghost" size="sm">
-                  🔔
+              <Link href="/employer/notifications">
+                <div className="relative inline-block">
+                  <Button variant="ghost" size="sm">
+                    🔔
+                  </Button>
                   {unreadCount > 0 && (
                     <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                       {unreadCount}
                     </span>
                   )}
-                </Button>
+                </div>
               </Link>
               <Link href="/employer/profile">
                 <Button variant="outline" size="sm">
