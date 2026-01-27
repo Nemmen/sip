@@ -1,0 +1,66 @@
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# Testing
+coverage
+*.log
+
+# Next.js
+.next
+out
+build
+dist
+
+# Misc
+.DS_Store
+*.pem
+.env
+.env.local
+.env.*.local
+.turbo
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# IDEs
+.idea
+.vscode
+*.swp
+*.swo
+*~
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Terraform
+*.tfstate
+*.tfstate.backup
+.terraform
+.terraform.lock.hcl
+
+# Docker
+docker-compose.override.yml
+
+# Python
+__pycache__
+*.pyc
+.pytest_cache
+.venv
+venv
+
+# Prisma
+prisma/migrations/**/migration.sql

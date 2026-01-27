@@ -1,0 +1,10 @@
+{
+    "name": "@sip/validation",
+    "version": "1.0.0",
+    "main": "./index.ts",
+    "types": "./index.ts",
+    "license": "UNLICENSED",
+    "dependencies": {
+        "zod": "^3.22.4"
+    }
+}

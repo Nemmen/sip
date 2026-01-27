@@ -1,0 +1,164 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  # Lint and Test
+  lint-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type check
+        run: npm run build
+
+      - name: Run tests
+        run: npm run test
+
+  # Build and test API
+  build-api:
+    needs: lint-and-test
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: sip_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis:7
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        working-directory: ./apps/api-service
+        run: npm ci
+
+      - name: Generate Prisma Client
+        working-directory: ./apps/api-service
+        run: npx prisma generate
+
+      - name: Run migrations
+        working-directory: ./apps/api-service
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/sip_test
+        run: npx prisma migrate deploy
+
+      - name: Build
+        working-directory: ./apps/api-service
+        run: npm run build
+
+      - name: Run tests
+        working-directory: ./apps/api-service
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/sip_test
+          REDIS_HOST: localhost
+          JWT_SECRET: test-secret
+        run: npm run test
+
+  # Build and test Web App
+  build-web:
+    needs: lint-and-test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        working-directory: ./apps/web-app
+        run: npm ci
+
+      - name: Build
+        working-directory: ./apps/web-app
+        env:
+          NEXT_PUBLIC_API_URL: http://localhost:3001/api/v1
+        run: npm run build
+
+  # Build and test AI Engine
+  build-ai:
+    needs: lint-and-test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        working-directory: ./apps/ai-engine
+        run: pip install -r requirements.txt
+
+      - name: Run tests
+        working-directory: ./apps/ai-engine
+        run: python -m pytest
+
+  # Deploy to Production
+  deploy-production:
+    if: github.ref == 'refs/heads/main'
+    needs: [build-api, build-web, build-ai]
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy to DigitalOcean
+        uses: digitalocean/app_action@v1
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Notify deployment
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          text: "Deployment to production completed"
+          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+        if: always()
