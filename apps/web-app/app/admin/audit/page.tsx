@@ -55,10 +55,18 @@ function AuditLogsContent() {
   const loadUsers = useCallback(async () => {
     try {
       // Use admin endpoint or fallback to regular users endpoint
-      const response = await apiClient.get('/admin/users').catch(() => 
+      const response = await apiClient.get('/admin/users').catch(() =>
         usersApi.getAll()
       );
-      setUsers(response.data || []);
+      const payload = response?.data;
+      const resolvedUsers = Array.isArray(payload)
+        ? payload
+        : Array.isArray(payload?.data)
+          ? payload.data
+          : Array.isArray(payload?.users)
+            ? payload.users
+            : [];
+      setUsers(resolvedUsers);
     } catch (err) {
       const error = err as AxiosError;
       console.error('Failed to load users:', error);
