@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import { useEmployerInternships, useEmployerApplications, useNotifications } from '@/lib/hooks';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
@@ -25,10 +26,15 @@ export default function EmployerDashboard() {
 
 function DashboardContent() {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, refreshUser } = useAuth();
   const { data: internships, loading: internshipsLoading } = useEmployerInternships();
   const { data: applications, loading: applicationsLoading } = useEmployerApplications();
   const { unreadCount } = useNotifications();
+
+  // Refresh user data on mount to ensure KYC status is current
+  useEffect(() => {
+    refreshUser();
+  }, [refreshUser]);
 
   // Calculate comprehensive stats
   const stats = {

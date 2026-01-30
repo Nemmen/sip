@@ -101,6 +101,7 @@ model User {
   role          UserRole
   status        UserStatus @default(PENDING_VERIFICATION)
   emailVerified Boolean    @default(false) @map("email_verified")
+  kycStatus     KYCStatus? @map("kyc_status")
   
   refreshToken  String?    @map("refresh_token")
   lastLoginAt   DateTime?  @map("last_login_at")
@@ -230,6 +231,8 @@ model Application {
   coverLetter  String            @map("cover_letter") @db.Text
   resumeUrl    String?           @map("resume_url")
   aiMatchScore Float?            @map("ai_match_score")
+  interviewDate DateTime?        @map("interview_date")
+  interviewNotes String?         @map("interview_notes") @db.Text
   
   appliedAt    DateTime          @default(now()) @map("applied_at")
   updatedAt    DateTime          @updatedAt @map("updated_at")

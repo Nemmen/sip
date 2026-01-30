@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import { useInternships, useApplications, useNotifications } from '@/lib/hooks';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
@@ -27,10 +28,15 @@ export default function StudentDashboard() {
 
 function DashboardContent() {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, refreshUser } = useAuth();
   const { data: internships, loading: internshipsLoading } = useInternships({ limit: 6 });
   const { data: applications, loading: applicationsLoading } = useApplications();
   const { unreadCount } = useNotifications();
+
+  // Refresh user data on mount to ensure KYC status is current
+  useEffect(() => {
+    refreshUser();
+  }, [refreshUser]);
 
   // Calculate profile completeness
   const calculateProfileCompleteness = () => {
@@ -156,25 +162,52 @@ function DashboardContent() {
 
       {/* KYC Alert */}
       {user?.kycStatus !== 'APPROVED' && (
-        <div className="mb-6 p-5 bg-gradient-to-r from-red-50 to-pink-50 border border-red-200 rounded-lg">
+        <div className={`mb-6 p-5 rounded-lg border ${
+          user?.kycStatus === 'REJECTED' 
+            ? 'bg-gradient-to-r from-red-50 to-pink-50 border-red-200' 
+            : user?.kycStatus === 'UNDER_REVIEW'
+            ? 'bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200'
+            : user?.kycStatus === 'PENDING'
+            ? 'bg-gradient-to-r from-purple-50 to-pink-50 border-purple-200'
+            : 'bg-gradient-to-r from-yellow-50 to-orange-50 border-yellow-200'
+        }`}>
           <div className="flex items-start gap-4">
-            <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center text-red-600 text-2xl flex-shrink-0">
-              ⚠️
+            <div className={`w-12 h-12 rounded-full flex items-center justify-center text-2xl flex-shrink-0 ${
+              user?.kycStatus === 'REJECTED' 
+                ? 'bg-red-100 text-red-600' 
+                : user?.kycStatus === 'UNDER_REVIEW'
+                ? 'bg-blue-100 text-blue-600'
+                : user?.kycStatus === 'PENDING'
+                ? 'bg-purple-100 text-purple-600'
+                : 'bg-yellow-100 text-yellow-600'
+            }`}>
+              {user?.kycStatus === 'REJECTED' ? '❌' : user?.kycStatus === 'UNDER_REVIEW' ? '⏳' : user?.kycStatus === 'PENDING' ? '📋' : '⚠️'}
             </div>
             <div className="flex-1">
               <h3 className="font-semibold text-gray-900 mb-1">
-                Verify your profile to unlock all features
+                {user?.kycStatus === 'PENDING' && 'KYC Verification Pending'}
+                {user?.kycStatus === 'UNDER_REVIEW' && 'KYC Under Review'}
+                {user?.kycStatus === 'REJECTED' && 'KYC Verification Rejected'}
+                {!user?.kycStatus && 'Verify your profile to unlock all features'}
               </h3>
               <p className="text-sm text-gray-700 mb-3">
-                Verified profiles get 3x more responses from employers
+                {!user?.kycStatus 
+                  ? 'Verified profiles get 3x more responses from employers'
+                  : user?.kycStatus === 'REJECTED'
+                  ? 'Your KYC was rejected. Please resubmit with correct documents.'
+                  : user?.kycStatus === 'PENDING'
+                  ? 'Your KYC submission is pending review.'
+                  : 'Your KYC is being reviewed by our team. This usually takes 24-48 hours.'}
               </p>
-              <Button 
-                variant="primary" 
-                size="sm"
-                onClick={() => router.push('/student/profile')}
-              >
-                Verify Now
-              </Button>
+              {(!user?.kycStatus || user?.kycStatus === 'REJECTED') && (
+                <Button 
+                  variant="primary" 
+                  size="sm"
+                  onClick={() => router.push('/student/profile/kyc')}
+                >
+                  {user?.kycStatus === 'REJECTED' ? 'Resubmit KYC' : 'Verify Now'}
+                </Button>
+              )}
             </div>
           </div>
         </div>

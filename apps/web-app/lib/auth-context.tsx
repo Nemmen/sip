@@ -9,7 +9,7 @@ interface User {
     id: string;
     email: string;
     role: 'STUDENT' | 'EMPLOYER' | 'ADMIN' | 'TPO';
-    kycStatus?: 'PENDING' | 'VERIFIED' | 'REJECTED';
+    kycStatus?: 'PENDING' | 'APPROVED' | 'REJECTED' | 'UNDER_REVIEW';
     studentProfile?: {
         id: string;
         firstName: string;

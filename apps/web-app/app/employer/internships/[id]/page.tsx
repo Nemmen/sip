@@ -51,7 +51,10 @@ function InternshipDetailContent() {
   const [updatingAppId, setUpdatingAppId] = useState<string | null>(null);
   const [showRejectModal, setShowRejectModal] = useState(false);
   const [showAcceptModal, setShowAcceptModal] = useState(false);
+  const [showInterviewModal, setShowInterviewModal] = useState(false);
   const [selectedApplication, setSelectedApplication] = useState<any>(null);
+  const [interviewDate, setInterviewDate] = useState('');
+  const [interviewNotes, setInterviewNotes] = useState('');
   
   // Bulk actions state
   const [selectedApplications, setSelectedApplications] = useState<Set<string>>(new Set());
@@ -184,22 +187,25 @@ function InternshipDetailContent() {
     );
   };
 
-  const handleStatusChange = async (applicationId: string, newStatus: string) => {
+  const handleStatusChange = async (applicationId: string, newStatus: string, interviewDateTime?: string, notes?: string) => {
     try {
       setUpdatingAppId(applicationId);
-      await applicationsApi.updateStatus(applicationId, newStatus);
+      await applicationsApi.updateStatus(applicationId, newStatus, interviewDateTime, notes);
       
       // Update local state optimistically
       setApplications(prev =>
         prev.map(app =>
-          app.id === applicationId ? { ...app, status: newStatus } : app
+          app.id === applicationId ? { ...app, status: newStatus, interviewDate: interviewDateTime, interviewNotes: notes } : app
         )
       );
       
       // Close modals
       setShowRejectModal(false);
       setShowAcceptModal(false);
+      setShowInterviewModal(false);
       setSelectedApplication(null);
+      setInterviewDate('');
+      setInterviewNotes('');
     } catch (err: any) {
       console.error('Failed to update status:', err);
       setError(err.response?.data?.message || 'Failed to update application status');
@@ -216,6 +222,17 @@ function InternshipDetailContent() {
   const openAcceptModal = (application: any) => {
     setSelectedApplication(application);
     setShowAcceptModal(true);
+  };
+
+  const openInterviewModal = (application: any) => {
+    setSelectedApplication(application);
+    // Set default interview date to tomorrow at 10 AM
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(10, 0, 0, 0);
+    setInterviewDate(tomorrow.toISOString().slice(0, 16));
+    setInterviewNotes('');
+    setShowInterviewModal(true);
   };
 
   // Bulk action handlers
@@ -784,7 +801,20 @@ function InternshipDetailContent() {
                             </div>
                           </td>
                           <td className="px-4 py-4">
-                            {renderStatusBadge(app.status)}
+                            <div className="space-y-1">
+                              {renderStatusBadge(app.status)}
+                              {app.status === 'INTERVIEW_SCHEDULED' && app.interviewDate && (
+                                <div className="text-xs text-[var(--text-secondary)] mt-1">
+                                  📅 {new Date(app.interviewDate).toLocaleDateString('en-IN', {
+                                    day: 'numeric',
+                                    month: 'short',
+                                    year: 'numeric',
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                  })}
+                                </div>
+                              )}
+                            </div>
                           </td>
                           <td className="px-4 py-4">
                             <span className="text-sm text-[var(--text-secondary)]">
@@ -814,6 +844,8 @@ function InternshipDetailContent() {
                                         } else if (action.targetStatus === 'REJECTED') {
                                           openRejectModal(app);
                                         }
+                                      } else if (action.targetStatus === 'INTERVIEW_SCHEDULED') {
+                                        openInterviewModal(app);
                                       } else {
                                         handleStatusChange(app.id, action.targetStatus);
                                       }
@@ -1092,6 +1124,100 @@ function InternshipDetailContent() {
                 </>
               ) : (
                 'Yes, Delete Permanently'
+              )}
+            </Button>
+          </div>
+        </div>
+      </Modal>
+
+      {/* Schedule Interview Modal */}
+      <Modal
+        isOpen={showInterviewModal}
+        onClose={() => {
+          setShowInterviewModal(false);
+          setSelectedApplication(null);
+          setInterviewDate('');
+          setInterviewNotes('');
+        }}
+        title="Schedule Interview"
+      >
+        <div className="space-y-4">
+          <p className="text-[var(--text-secondary)]">
+            Schedule an interview with <strong>{selectedApplication?.student?.studentProfile?.fullName || selectedApplication?.student?.email}</strong>
+          </p>
+
+          <div>
+            <label className="block text-sm font-medium text-[var(--text-primary)] mb-2">
+              Interview Date & Time *
+            </label>
+            <input
+              type="datetime-local"
+              value={interviewDate}
+              onChange={(e) => setInterviewDate(e.target.value)}
+              min={new Date().toISOString().slice(0, 16)}
+              className="w-full px-4 py-2 border border-[var(--border)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
+              required
+            />
+            <p className="text-xs text-[var(--text-secondary)] mt-1">
+              The candidate will receive a notification with the interview details
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-[var(--text-primary)] mb-2">
+              Interview Notes (Optional)
+            </label>
+            <textarea
+              value={interviewNotes}
+              onChange={(e) => setInterviewNotes(e.target.value)}
+              placeholder="Add meeting link, location, or any special instructions..."
+              rows={4}
+              className="w-full px-4 py-2 border border-[var(--border)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary)] resize-none"
+            />
+            <p className="text-xs text-[var(--text-secondary)] mt-1">
+              e.g., "Join via Google Meet: meet.google.com/xyz" or "Office address: 123 Street"
+            </p>
+          </div>
+
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+            <p className="text-sm text-blue-800">
+              <strong>📧 Notification:</strong> The candidate will be automatically notified about the interview via email and in-app notification.
+            </p>
+          </div>
+
+          <div className="flex gap-3 pt-4">
+            <Button
+              variant="outline"
+              fullWidth
+              onClick={() => {
+                setShowInterviewModal(false);
+                setSelectedApplication(null);
+                setInterviewDate('');
+                setInterviewNotes('');
+              }}
+              disabled={updatingAppId !== null}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="primary"
+              fullWidth
+              onClick={() => {
+                if (!interviewDate) {
+                  alert('Please select an interview date and time');
+                  return;
+                }
+                handleStatusChange(selectedApplication.id, 'INTERVIEW_SCHEDULED', interviewDate, interviewNotes);
+              }}
+              disabled={updatingAppId !== null || !interviewDate}
+            >
+              {updatingAppId ? (
+                <>
+                  <LoadingSpinner size="sm" />
+                  <span className="ml-2">Scheduling...</span>
+                </>
+              ) : (
+                '📅 Schedule Interview'
               )}
             </Button>
           </div>

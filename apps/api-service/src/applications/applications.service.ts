@@ -118,11 +118,58 @@ export class ApplicationsService {
         });
     }
 
-    async updateStatus(id: string, status: ApplicationStatus) {
-        return this.prisma.application.update({
+    async updateStatus(id: string, status: ApplicationStatus, interviewDate?: Date, interviewNotes?: string) {
+        const application = await this.prisma.application.update({
             where: { id },
-            data: { status },
+            data: {
+                status,
+                ...(interviewDate && { interviewDate }),
+                ...(interviewNotes && { interviewNotes }),
+            },
+            include: {
+                student: {
+                    select: {
+                        id: true,
+                        email: true,
+                        studentProfile: {
+                            select: {
+                                fullName: true,
+                            },
+                        },
+                    },
+                },
+                internship: {
+                    select: {
+                        id: true,
+                        title: true,
+                        employer: {
+                            select: {
+                                employerProfile: {
+                                    select: {
+                                        companyName: true,
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            },
         });
+
+        // Send notification if interview is scheduled
+        if (status === 'INTERVIEW_SCHEDULED' && interviewDate) {
+            await this.prisma.notification.create({
+                data: {
+                    userId: application.studentId,
+                    type: 'APPLICATION_STATUS',
+                    title: 'Interview Scheduled',
+                    message: `Your interview for ${application.internship.title} at ${application.internship.employer.employerProfile.companyName} has been scheduled for ${new Date(interviewDate).toLocaleString('en-US', { dateStyle: 'full', timeStyle: 'short' })}.${interviewNotes ? ` Notes: ${interviewNotes}` : ''}`,
+                    link: `/student/applications/${application.id}`,
+                },
+            });
+        }
+
+        return application;
     }
 
     async findOne(id: string, userId: string) {

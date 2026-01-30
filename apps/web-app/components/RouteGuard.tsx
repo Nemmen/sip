@@ -34,7 +34,7 @@ export function RouteGuard({ children, allowedRoles, requireKYC = false }: Route
             return;
         }
 
-        if (requireKYC && user?.role === 'EMPLOYER' && user.kycStatus !== 'VERIFIED') {
+        if (requireKYC && user?.role === 'EMPLOYER' && user.kycStatus !== 'APPROVED') {
             router.push('/employer/kyc');
             return;
         }
@@ -56,7 +56,7 @@ export function RouteGuard({ children, allowedRoles, requireKYC = false }: Route
         return null;
     }
 
-    if (requireKYC && user?.role === 'EMPLOYER' && user.kycStatus !== 'VERIFIED') {
+    if (requireKYC && user?.role === 'EMPLOYER' && user.kycStatus !== 'APPROVED') {
         return null;
     }
 

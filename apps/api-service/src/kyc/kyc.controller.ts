@@ -14,8 +14,6 @@ export class KycController {
     constructor(private kycService: KycService) { }
 
     @Post('submit')
-    @UseGuards(RolesGuard)
-    @Roles('EMPLOYER')
     @ApiOperation({ summary: 'Submit KYC documents' })
     async submitKYC(@CurrentUser() user: any, @Body() data: any) {
         return this.kycService.submitKYC(user.userId, data);
@@ -25,6 +23,13 @@ export class KycController {
     @ApiOperation({ summary: 'Get user KYC documents' })
     async getMyDocuments(@CurrentUser() user: any) {
         return this.kycService.getKYCDocuments(user.userId);
+    }
+
+    @Get('my-kyc')
+    @ApiOperation({ summary: 'Get user latest KYC' })
+    async getMyKYC(@CurrentUser() user: any) {
+        const docs = await this.kycService.getKYCDocuments(user.userId);
+        return docs[0] || null;
     }
 
     @Get('pending')

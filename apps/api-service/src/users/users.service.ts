@@ -14,6 +14,7 @@ export class UsersService {
                 role: true,
                 status: true,
                 emailVerified: true,
+                kycStatus: true,
                 createdAt: true,
                 studentProfile: true,
                 employerProfile: true,

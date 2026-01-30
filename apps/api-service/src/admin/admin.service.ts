@@ -21,7 +21,7 @@ export class AdminService {
 
     async getAllUsers(filters: { role?: string; status?: string; page: number; limit: number }): Promise<PaginatedResponse<any>> {
         const where: any = {};
-        
+
         if (filters.role && filters.role !== 'ALL') {
             where.role = filters.role;
         }
@@ -40,6 +40,7 @@ export class AdminService {
                     role: true,
                     status: true,
                     emailVerified: true,
+                    kycStatus: true,
                     createdAt: true,
                     updatedAt: true,
                     studentProfile: {
@@ -77,7 +78,7 @@ export class AdminService {
 
     async getAllInternships(filters: { status?: string; page: number; limit: number }): Promise<PaginatedResponse<any>> {
         const where: any = {};
-        
+
         if (filters.status && filters.status !== 'ALL') {
             where.status = filters.status;
         }
@@ -122,7 +123,7 @@ export class AdminService {
 
     async getAllApplications(filters: { status?: string; page: number; limit: number }): Promise<PaginatedResponse<any>> {
         const where: any = {};
-        
+
         if (filters.status && filters.status !== 'ALL') {
             where.status = filters.status;
         }
@@ -178,7 +179,7 @@ export class AdminService {
 
     async getAllKYC(status?: string) {
         const where: any = {};
-        
+
         if (status && status !== 'ALL') {
             if (status === 'PENDING') {
                 where.status = { in: ['PENDING', 'UNDER_REVIEW'] };

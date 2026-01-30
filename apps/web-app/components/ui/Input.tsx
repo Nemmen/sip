@@ -10,7 +10,10 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-    ({ label, error, helperText, leftIcon, rightIcon, className, ...props }, ref) => {
+    ({ label, error, helperText, leftIcon, rightIcon, className, value, ...props }, ref) => {
+        // Convert null to empty string to prevent React warning
+        const safeValue = value === null ? '' : value;
+        
         return (
             <div className="w-full">
                 {label && (
@@ -38,6 +41,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                             rightIcon && 'pr-10',
                             className
                         )}
+                        value={safeValue}
                         {...props}
                     />
                     {rightIcon && (

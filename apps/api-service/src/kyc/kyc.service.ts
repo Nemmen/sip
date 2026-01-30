@@ -20,6 +20,12 @@ export class KycService {
             },
         });
 
+        // Update user's KYC status
+        await this.prisma.user.update({
+            where: { id: userId },
+            data: { kycStatus: 'PENDING' },
+        });
+
         // Add to KYC verification queue
         await this.kycQueue.add(
             'verify-kyc',
@@ -44,7 +50,7 @@ export class KycService {
     }
 
     async reviewKYC(documentId: string, approved: boolean, reason?: string) {
-        return this.prisma.kYCDocument.update({
+        const document = await this.prisma.kYCDocument.update({
             where: { id: documentId },
             data: {
                 status: approved ? 'APPROVED' : 'REJECTED',
@@ -52,6 +58,14 @@ export class KycService {
                 reviewedAt: new Date(),
             },
         });
+
+        // Update user's KYC status
+        await this.prisma.user.update({
+            where: { id: document.userId },
+            data: { kycStatus: approved ? 'APPROVED' : 'REJECTED' },
+        });
+
+        return document;
     }
 
     async getPendingKYC() {

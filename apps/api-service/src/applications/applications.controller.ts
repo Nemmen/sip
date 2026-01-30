@@ -59,8 +59,9 @@ export class ApplicationsController {
     @UseGuards(RolesGuard)
     @Roles('EMPLOYER')
     @ApiOperation({ summary: 'Update application status' })
-    async updateStatus(@Param('id') id: string, @Body() body: { status: any }) {
-        return this.applicationsService.updateStatus(id, body.status);
+    async updateStatus(@Param('id') id: string, @Body() body: { status: any; interviewDate?: string; interviewNotes?: string }) {
+        const interviewDate = body.interviewDate ? new Date(body.interviewDate) : undefined;
+        return this.applicationsService.updateStatus(id, body.status, interviewDate, body.interviewNotes);
     }
 
     @Put(':id/withdraw')

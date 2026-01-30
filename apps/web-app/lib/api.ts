@@ -102,8 +102,8 @@ export const applicationsApi = {
     getOne: (id: string) => apiClient.get(`/applications/${id}`),
     getInternshipApplications: (internshipId: string) =>
         apiClient.get(`/applications/internship/${internshipId}`),
-    updateStatus: (id: string, status: string) =>
-        apiClient.patch(`/applications/${id}/status`, { status }),
+    updateStatus: (id: string, status: string, interviewDate?: string, interviewNotes?: string) =>
+        apiClient.put(`/applications/${id}/status`, { status, interviewDate, interviewNotes }),
     withdraw: (id: string) => apiClient.put(`/applications/${id}/withdraw`),
 };
 
