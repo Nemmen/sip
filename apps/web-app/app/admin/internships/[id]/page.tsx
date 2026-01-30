@@ -122,7 +122,7 @@ function AdminInternshipDetailsContent() {
           ← Back to Internships
         </Button>
         
-        <Card className="bg-gradient-to-r from-purple-600 to-pink-700 text-white border-0">
+        <Card className="bg-[var(--primary)] text-white border-0">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
@@ -130,7 +130,7 @@ function AdminInternshipDetailsContent() {
                   <h1 className="text-3xl font-bold">{internship.title}</h1>
                   <StatusBadge status={internship.status} />
                 </div>
-                <p className="text-purple-100">
+                <p className="text-white/80">
                   {internship.company || internship.employer?.companyProfile?.companyName} • {internship.location}
                 </p>
               </div>

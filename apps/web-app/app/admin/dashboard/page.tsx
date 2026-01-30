@@ -153,7 +153,7 @@ function DashboardContent() {
   return (
     <div className="p-6 max-w-7xl mx-auto">
       {/* Welcome Header */}
-      <Card className="mb-6 bg-gradient-to-r from-purple-600 to-pink-700 text-white border-0">
+      <Card className="mb-6 bg-[var(--primary)] text-white border-0">
         <CardContent className="p-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">

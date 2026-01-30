@@ -1,24 +1,39 @@
 @import "tailwindcss";
 
 :root {
+  /* SIP Brand Colors */
   --primary: #243447;
-  --primary-light: #2e4053;
+  --primary-light: #2e4a5f;
+  --primary-dark: #1a2633;
   --accent: #E1A337;
-  --accent-hover: #d49629;
+  --accent-hover: #c78f2a;
+  --accent-light: #f5d78e;
   --background: #F3EEE6;
+  --background-alt: #EDE6DA;
   --card-bg: #ffffff;
   --text-primary: #1a1a1a;
-  --text-secondary: #666666;
-  --border: #e0e0e0;
-  --error: #ef4444;
-  --success: #10b981;
-  --warning: #f59e0b;
-  --info: #3b82f6;
+  --text-secondary: #5a5a5a;
+  --text-muted: #888888;
+  --border: #d4d4d4;
+  --border-light: #e8e8e8;
+  --error: #dc2626;
+  --success: #059669;
+  --warning: #d97706;
+  --info: #2563eb;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
 }
 
 @theme inline {
   --color-primary: var(--primary);
+  --color-primary-light: var(--primary-light);
+  --color-primary-dark: var(--primary-dark);
   --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
   --color-background: var(--background);
   --font-sans: var(--font-montserrat);
 }
@@ -27,6 +42,13 @@ body {
   background: var(--background);
   color: var(--text-primary);
   font-family: var(--font-montserrat), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* Remove all rounded corners globally */
+*,
+*::before,
+*::after {
+  border-radius: 0 !important;
 }
 
 /* Custom scrollbar */
@@ -41,7 +63,6 @@ body {
 
 ::-webkit-scrollbar-thumb {
   background: var(--primary);
-  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -54,14 +75,47 @@ body {
     transform: translateX(100%);
     opacity: 0;
   }
+
   to {
     transform: translateX(0);
     opacity: 1;
   }
 }
 
+@keyframes fade-in-up {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse-slow {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.7;
+  }
+}
+
 .animate-slide-in-right {
   animation: slide-in-right 0.3s ease-out;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.5s ease-out;
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 3s ease-in-out infinite;
 }
 
 /* Utilities */
@@ -76,4 +130,33 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* Hero section background pattern */
+.hero-pattern {
+  background-image:
+    radial-gradient(circle at 25% 25%, rgba(225, 163, 55, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(36, 52, 71, 0.1) 0%, transparent 50%);
+}
+
+/* Card hover effects */
+.card-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Button focus states */
+.btn-focus:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Selection styling */
+::selection {
+  background: var(--accent);
+  color: var(--primary-dark);
 }

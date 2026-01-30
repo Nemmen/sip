@@ -25,7 +25,7 @@ export function Modal({ isOpen, onClose, children, title, size = 'md' }: ModalPr
             <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
                 {/* Background overlay */}
                 <div
-                    className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75"
+                    className="fixed inset-0 transition-opacity bg-[var(--primary-dark)] bg-opacity-80"
                     onClick={onClose}
                 ></div>
 
@@ -34,16 +34,16 @@ export function Modal({ isOpen, onClose, children, title, size = 'md' }: ModalPr
 
                 <div
                     className={clsx(
-                        'relative inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle w-full z-50',
+                        'relative inline-block align-bottom bg-white text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle w-full z-50 border-2 border-[var(--primary)]',
                         sizeClasses[size]
                     )}
                 >
                     {title && (
-                        <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-                            <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
+                        <div className="px-6 py-4 border-b-2 border-[var(--border)] flex items-center justify-between bg-[var(--background)]">
+                            <h3 className="text-lg font-bold text-[var(--primary)]">{title}</h3>
                             <button
                                 onClick={onClose}
-                                className="text-gray-400 hover:text-gray-600 transition-colors"
+                                className="text-[var(--text-muted)] hover:text-[var(--primary)] transition-colors p-1 hover:bg-[var(--primary)]/10"
                             >
                                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path
@@ -56,7 +56,7 @@ export function Modal({ isOpen, onClose, children, title, size = 'md' }: ModalPr
                             </button>
                         </div>
                     )}
-                    <div className="px-6 py-4">{children}</div>
+                    <div className="px-6 py-5">{children}</div>
                 </div>
             </div>
         </div>

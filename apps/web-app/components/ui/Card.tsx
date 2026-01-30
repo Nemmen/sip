@@ -16,11 +16,15 @@ export function Card({ children, className, hover = false, padding = 'md' }: Car
         lg: 'p-8',
     };
 
+    // Check if className contains a background override
+    const hasCustomBg = className?.includes('bg-');
+
     return (
         <div
             className={clsx(
-                'bg-white rounded-lg border border-gray-200 shadow-sm',
-                hover && 'transition-shadow hover:shadow-md',
+                !hasCustomBg && 'bg-white',
+                'border border-[var(--border)] shadow-sm',
+                hover && 'transition-all duration-200 hover:shadow-md hover:border-[var(--accent)]',
                 paddingClasses[padding],
                 className
             )}
@@ -31,11 +35,11 @@ export function Card({ children, className, hover = false, padding = 'md' }: Car
 }
 
 export function CardHeader({ children, className }: { children: React.ReactNode; className?: string }) {
-    return <div className={clsx('border-b border-gray-200 pb-4 mb-4', className)}>{children}</div>;
+    return <div className={clsx('border-b border-[var(--border)] pb-4 mb-4', className)}>{children}</div>;
 }
 
 export function CardTitle({ children, className }: { children: React.ReactNode; className?: string }) {
-    return <h3 className={clsx('text-lg font-semibold text-gray-900', className)}>{children}</h3>;
+    return <h3 className={clsx('text-lg font-bold text-[var(--primary)]', className)}>{children}</h3>;
 }
 
 export function CardContent({ children, className }: { children: React.ReactNode; className?: string }) {

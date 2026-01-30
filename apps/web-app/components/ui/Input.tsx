@@ -17,26 +17,27 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         return (
             <div className="w-full">
                 {label && (
-                    <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                    <label className="block text-sm font-semibold text-[var(--primary)] mb-2">
                         {label}
-                        {props.required && <span className="text-red-500 ml-1">*</span>}
+                        {props.required && <span className="text-[var(--error)] ml-1">*</span>}
                     </label>
                 )}
                 <div className="relative">
                     {leftIcon && (
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[var(--text-muted)]">
                             {leftIcon}
                         </div>
                     )}
                     <input
                         ref={ref}
                         className={clsx(
-                            'w-full px-4 py-2.5 border rounded-lg transition-colors duration-200',
-                            'focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent',
-                            'disabled:bg-gray-100 disabled:cursor-not-allowed',
+                            'w-full px-4 py-3 border-2 transition-all duration-200',
+                            'focus:outline-none focus:border-[var(--accent)] focus:ring-0',
+                            'disabled:bg-gray-100 disabled:cursor-not-allowed disabled:text-[var(--text-muted)]',
+                            'placeholder:text-[var(--text-muted)]',
                             error
-                                ? 'border-red-500 focus:ring-red-500'
-                                : 'border-gray-300 hover:border-gray-400',
+                                ? 'border-[var(--error)] focus:border-[var(--error)]'
+                                : 'border-[var(--border)] hover:border-[var(--primary)]',
                             leftIcon && 'pl-10',
                             rightIcon && 'pr-10',
                             className
@@ -45,13 +46,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                         {...props}
                     />
                     {rightIcon && (
-                        <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-gray-400">
+                        <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-[var(--text-muted)]">
                             {rightIcon}
                         </div>
                     )}
                 </div>
-                {error && <p className="mt-1.5 text-sm text-red-600">{error}</p>}
-                {helperText && !error && <p className="mt-1.5 text-sm text-gray-500">{helperText}</p>}
+                {error && <p className="mt-2 text-sm font-medium text-[var(--error)]">{error}</p>}
+                {helperText && !error && <p className="mt-2 text-sm text-[var(--text-secondary)]">{helperText}</p>}
             </div>
         );
     }

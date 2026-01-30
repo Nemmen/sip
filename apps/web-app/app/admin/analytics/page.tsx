@@ -145,7 +145,7 @@ function AdminAnalyticsContent() {
           ← Back to Dashboard
         </Button>
         
-        <Card className="bg-gradient-to-r from-blue-600 to-purple-700 text-white border-0">
+        <Card className="bg-[var(--primary)] text-white border-0">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
@@ -314,13 +314,13 @@ function AdminAnalyticsContent() {
               <p className="text-xs text-gray-600 mt-1">Rejected</p>
             </div>
           </div>
-          <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg">
+          <div className="mt-6 p-4 bg-[var(--background)]">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-700">Acceptance Rate</p>
                 <p className="text-xs text-gray-500">Accepted / Total Applications</p>
               </div>
-              <p className="text-3xl font-bold text-purple-600">{data?.metrics.acceptanceRate}%</p>
+              <p className="text-3xl font-bold text-[var(--primary)]">{data?.metrics.acceptanceRate}%</p>
             </div>
           </div>
         </CardContent>

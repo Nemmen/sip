@@ -133,12 +133,12 @@ function OverviewContent() {
           ← Back to Internships
         </Button>
         
-        <Card className="bg-gradient-to-r from-indigo-600 to-purple-700 text-white border-0">
+        <Card className="bg-[var(--primary)] text-white border-0">
           <CardContent className="p-6">
             <div className="flex items-start justify-between mb-4">
               <div className="flex-1">
                 <h1 className="text-3xl font-bold mb-2">{internship.title}</h1>
-                <p className="text-indigo-100 text-lg">
+                <p className="text-white/80 text-lg">
                   {internship.company?.companyName || 'Your Company'}
                 </p>
               </div>

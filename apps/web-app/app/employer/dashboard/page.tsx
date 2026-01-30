@@ -78,7 +78,7 @@ function DashboardContent() {
   return (
     <div className="p-6 max-w-7xl mx-auto">
       {/* Welcome Header */}
-      <Card className="mb-6 bg-gradient-to-r from-indigo-600 to-purple-700 text-white border-0">
+      <Card className="mb-6 bg-[var(--primary)] text-white border-0">
         <CardContent className="p-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
@@ -89,29 +89,28 @@ function DashboardContent() {
               />
               <div>
                 <h1 className="text-3xl font-bold mb-1">
-                  {user?.companyProfile?.companyName || 'Your Company'} 🏢
+                  {user?.companyProfile?.companyName || 'Your Company'}
                 </h1>
-                <p className="text-indigo-100">
+                <p className="text-white/80">
                   {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                 </p>
               </div>
             </div>
             <div className="flex items-center gap-3">
               {user?.kycStatus === 'APPROVED' && (
-                <div className="flex items-center gap-2 bg-green-500 bg-opacity-20 px-4 py-2 rounded-lg border border-green-400">
+                <div className="flex items-center gap-2 bg-green-500 px-4 py-2 border border-green-400 text-white">
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
                   <span className="text-sm font-medium">Verified Company</span>
                 </div>
               )}
-              <Button 
-                variant="primary" 
+              <button 
                 onClick={() => router.push('/employer/internships/new')}
-                className="bg-white text-indigo-600 hover:bg-indigo-50"
+                className="px-6 py-2.5 bg-[var(--accent)] text-[var(--primary-dark)] font-semibold hover:bg-[var(--accent-hover)] transition uppercase tracking-wide text-sm border-2 border-[var(--accent)]"
               >
-                + Post Internship
-              </Button>
+                + POST INTERNSHIP
+              </button>
             </div>
           </div>
         </CardContent>

@@ -7,21 +7,21 @@ interface PageHeaderProps {
 
 export function PageHeader({ title, description, actions, breadcrumbs }: PageHeaderProps) {
   return (
-    <div className="bg-white border-b border-gray-200">
+    <div className="bg-white border-b-2 border-[var(--border)]">
       <div className="px-6 py-6">
         {breadcrumbs && breadcrumbs.length > 0 && (
-          <div className="flex items-center gap-2 text-sm text-gray-600 mb-3">
+          <div className="flex items-center gap-2 text-sm text-[var(--text-secondary)] mb-4">
             {breadcrumbs.map((crumb, index) => (
               <div key={index} className="flex items-center gap-2">
                 {crumb.href ? (
-                  <a href={crumb.href} className="hover:text-blue-600 transition">
+                  <a href={crumb.href} className="hover:text-[var(--accent)] transition font-medium">
                     {crumb.label}
                   </a>
                 ) : (
-                  <span className="font-medium text-gray-900">{crumb.label}</span>
+                  <span className="font-semibold text-[var(--primary)]">{crumb.label}</span>
                 )}
                 {index < breadcrumbs.length - 1 && (
-                  <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
                 )}
@@ -32,9 +32,9 @@ export function PageHeader({ title, description, actions, breadcrumbs }: PageHea
         
         <div className="flex items-start justify-between">
           <div className="flex-1">
-            <h1 className="text-3xl font-bold text-gray-900">{title}</h1>
+            <h1 className="text-3xl font-bold text-[var(--primary)]">{title}</h1>
             {description && (
-              <p className="mt-2 text-gray-600">{description}</p>
+              <p className="mt-2 text-[var(--text-secondary)]">{description}</p>
             )}
           </div>
           

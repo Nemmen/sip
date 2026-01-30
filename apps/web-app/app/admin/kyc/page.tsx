@@ -125,7 +125,7 @@ function AdminKYCContent() {
         >
           ← Back to Dashboard
         </Button>
-        <Card className="bg-gradient-to-r from-purple-600 to-pink-700 text-white border-0">
+        <Card className="bg-[var(--primary)] text-white border-0">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>

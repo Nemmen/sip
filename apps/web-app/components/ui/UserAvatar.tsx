@@ -26,11 +26,11 @@ export function UserAvatar({ name, email, src, size = 'md', showName, showEmail 
   };
 
   const colors = [
-    'bg-gradient-to-br from-blue-500 to-indigo-600',
-    'bg-gradient-to-br from-purple-500 to-pink-600',
-    'bg-gradient-to-br from-green-500 to-teal-600',
-    'bg-gradient-to-br from-orange-500 to-red-600',
-    'bg-gradient-to-br from-cyan-500 to-blue-600',
+    'bg-[var(--primary)]',
+    'bg-[var(--accent)]',
+    'bg-emerald-600',
+    'bg-purple-600',
+    'bg-rose-600',
   ];
 
   const getColorClass = () => {
@@ -41,9 +41,9 @@ export function UserAvatar({ name, email, src, size = 'md', showName, showEmail 
 
   return (
     <div className="flex items-center gap-3">
-      <div className={`${sizeClasses[size]} rounded-full flex items-center justify-center text-white font-semibold ${getColorClass()}`}>
+      <div className={`${sizeClasses[size]} flex items-center justify-center text-white font-bold ${getColorClass()}`}>
         {src ? (
-          <img src={src} alt={name || email} className="w-full h-full rounded-full object-cover" />
+          <img src={src} alt={name || email} className="w-full h-full object-cover" />
         ) : (
           getInitials()
         )}
@@ -52,10 +52,10 @@ export function UserAvatar({ name, email, src, size = 'md', showName, showEmail 
       {(showName || showEmail) && (
         <div className="flex-1 min-w-0">
           {showName && name && (
-            <p className="text-sm font-medium text-gray-900 truncate">{name}</p>
+            <p className="text-sm font-semibold text-[var(--primary)] truncate">{name}</p>
           )}
           {showEmail && email && (
-            <p className="text-xs text-gray-500 truncate">{email}</p>
+            <p className="text-xs text-[var(--text-secondary)] truncate">{email}</p>
           )}
         </div>
       )}

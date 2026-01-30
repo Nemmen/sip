@@ -128,13 +128,13 @@ export function Sidebar() {
   const navItems = getNavItems();
 
   return (
-    <aside className={`${collapsed ? 'w-20' : 'w-64'} bg-white border-r border-gray-200 h-screen sticky top-16 flex flex-col transition-all duration-300`}>
+    <aside className={`${collapsed ? 'w-20' : 'w-64'} bg-white border-r-2 border-[var(--border)] h-screen sticky top-16 flex flex-col transition-all duration-300`}>
       {/* Collapse Toggle */}
       <button
         onClick={() => setCollapsed(!collapsed)}
-        className="absolute -right-3 top-6 w-6 h-6 bg-white border border-gray-200 rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition"
+        className="absolute -right-3 top-6 w-6 h-6 bg-white border-2 border-[var(--border)] flex items-center justify-center shadow-sm hover:shadow-md hover:border-[var(--accent)] transition"
       >
-        <svg className={`w-4 h-4 text-gray-600 transition-transform ${collapsed ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className={`w-4 h-4 text-[var(--primary)] transition-transform ${collapsed ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
         </svg>
       </button>
@@ -148,21 +148,21 @@ export function Sidebar() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ${
+              className={`flex items-center gap-3 px-3 py-3 transition-all ${
                 isActive
-                  ? 'bg-blue-50 text-blue-700 font-medium'
-                  : 'text-gray-700 hover:bg-gray-50'
+                  ? 'bg-[var(--primary)] text-white font-semibold'
+                  : 'text-[var(--text-secondary)] hover:bg-[var(--background)] hover:text-[var(--primary)]'
               }`}
               title={collapsed ? item.label : undefined}
             >
-              <span className={isActive ? 'text-blue-600' : 'text-gray-500'}>
+              <span className={isActive ? 'text-white' : ''}>
                 {item.icon}
               </span>
               {!collapsed && (
                 <>
-                  <span className="flex-1">{item.label}</span>
+                  <span className="flex-1 text-sm">{item.label}</span>
                   {item.badge && (
-                    <span className="px-2 py-0.5 bg-red-100 text-red-600 text-xs rounded-full font-medium">
+                    <span className="px-2 py-0.5 bg-[var(--error)] text-white text-xs font-bold">
                       {item.badge}
                     </span>
                   )}
@@ -174,16 +174,16 @@ export function Sidebar() {
       </nav>
 
       {/* Footer: Logout */}
-      <div className="p-3 border-t border-gray-200">
+      <div className="p-3 border-t-2 border-[var(--border)]">
         <button
           onClick={logout}
-          className="flex items-center gap-3 w-full px-3 py-2.5 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+          className="flex items-center gap-3 w-full px-3 py-3 text-[var(--error)] hover:bg-red-50 transition-colors font-semibold"
           title={collapsed ? 'Logout' : undefined}
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
           </svg>
-          {!collapsed && <span>Logout</span>}
+          {!collapsed && <span className="text-sm">Logout</span>}
         </button>
       </div>
     </aside>

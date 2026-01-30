@@ -13,15 +13,16 @@ export function AppLayout({ children }: AppLayoutProps) {
   const { user } = useAuth();
   const pathname = usePathname();
 
-  // Don't show layout on auth pages
+  // Don't show layout on auth pages or landing page
   const isAuthPage = pathname.startsWith('/auth/');
+  const isLandingPage = pathname === '/';
   
-  if (isAuthPage || !user) {
+  if (isAuthPage || isLandingPage || !user) {
     return <>{children}</>;
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[var(--background)]">
       <Navbar />
       <div className="flex">
         <Sidebar />

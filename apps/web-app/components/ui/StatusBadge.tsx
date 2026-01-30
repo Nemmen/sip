@@ -6,44 +6,44 @@ interface StatusBadgeProps {
 export function StatusBadge({ status, size = 'md' }: StatusBadgeProps) {
   const sizeClasses = {
     sm: 'px-2 py-0.5 text-xs',
-    md: 'px-2.5 py-1 text-sm',
-    lg: 'px-3 py-1.5 text-base',
+    md: 'px-3 py-1 text-xs',
+    lg: 'px-4 py-1.5 text-sm',
   };
 
-  const statusConfig: Record<string, { bg: string; text: string; dot?: boolean }> = {
+  const statusConfig: Record<string, { bg: string; text: string; border: string; dot?: boolean }> = {
     // Application statuses
-    SUBMITTED: { bg: 'bg-blue-100', text: 'text-blue-700', dot: true },
-    UNDER_REVIEW: { bg: 'bg-yellow-100', text: 'text-yellow-700', dot: true },
-    SHORTLISTED: { bg: 'bg-purple-100', text: 'text-purple-700', dot: true },
-    INTERVIEW_SCHEDULED: { bg: 'bg-indigo-100', text: 'text-indigo-700', dot: true },
-    ACCEPTED: { bg: 'bg-green-100', text: 'text-green-700', dot: true },
-    REJECTED: { bg: 'bg-red-100', text: 'text-red-700', dot: true },
-    WITHDRAWN: { bg: 'bg-gray-100', text: 'text-gray-700', dot: true },
+    SUBMITTED: { bg: 'bg-blue-50', text: 'text-blue-700', border: 'border-blue-200', dot: true },
+    UNDER_REVIEW: { bg: 'bg-amber-50', text: 'text-amber-700', border: 'border-amber-200', dot: true },
+    SHORTLISTED: { bg: 'bg-purple-50', text: 'text-purple-700', border: 'border-purple-200', dot: true },
+    INTERVIEW_SCHEDULED: { bg: 'bg-indigo-50', text: 'text-indigo-700', border: 'border-indigo-200', dot: true },
+    ACCEPTED: { bg: 'bg-emerald-50', text: 'text-emerald-700', border: 'border-emerald-200', dot: true },
+    REJECTED: { bg: 'bg-red-50', text: 'text-red-700', border: 'border-red-200', dot: true },
+    WITHDRAWN: { bg: 'bg-gray-50', text: 'text-gray-700', border: 'border-gray-200', dot: true },
     
     // Internship statuses
-    DRAFT: { bg: 'bg-gray-100', text: 'text-gray-700' },
-    PUBLISHED: { bg: 'bg-green-100', text: 'text-green-700' },
-    CLOSED: { bg: 'bg-red-100', text: 'text-red-700' },
+    DRAFT: { bg: 'bg-gray-50', text: 'text-gray-700', border: 'border-gray-200' },
+    PUBLISHED: { bg: 'bg-emerald-50', text: 'text-emerald-700', border: 'border-emerald-200' },
+    CLOSED: { bg: 'bg-red-50', text: 'text-red-700', border: 'border-red-200' },
     
     // KYC statuses
-    PENDING: { bg: 'bg-yellow-100', text: 'text-yellow-700' },
-    APPROVED: { bg: 'bg-green-100', text: 'text-green-700' },
-    VERIFIED: { bg: 'bg-green-100', text: 'text-green-700' },
+    PENDING: { bg: 'bg-amber-50', text: 'text-amber-700', border: 'border-amber-200' },
+    APPROVED: { bg: 'bg-emerald-50', text: 'text-emerald-700', border: 'border-emerald-200' },
+    VERIFIED: { bg: 'bg-emerald-50', text: 'text-emerald-700', border: 'border-emerald-200' },
     
     // User statuses
-    ACTIVE: { bg: 'bg-green-100', text: 'text-green-700' },
-    INACTIVE: { bg: 'bg-gray-100', text: 'text-gray-700' },
+    ACTIVE: { bg: 'bg-emerald-50', text: 'text-emerald-700', border: 'border-emerald-200' },
+    INACTIVE: { bg: 'bg-gray-50', text: 'text-gray-700', border: 'border-gray-200' },
     
     // Default
-    default: { bg: 'bg-gray-100', text: 'text-gray-700' },
+    default: { bg: 'bg-gray-50', text: 'text-gray-700', border: 'border-gray-200' },
   };
 
   const config = statusConfig[status] || statusConfig.default;
 
   return (
-    <span className={`inline-flex items-center gap-1.5 ${sizeClasses[size]} ${config.bg} ${config.text} font-medium rounded-full`}>
+    <span className={`inline-flex items-center gap-1.5 ${sizeClasses[size]} ${config.bg} ${config.text} ${config.border} border font-semibold uppercase tracking-wide`}>
       {config.dot && (
-        <span className={`w-1.5 h-1.5 rounded-full ${config.text.replace('text-', 'bg-')}`}></span>
+        <span className={`w-1.5 h-1.5 ${config.text.replace('text-', 'bg-')}`}></span>
       )}
       {status.replace(/_/g, ' ')}
     </span>
