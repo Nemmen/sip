@@ -1,19 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-
-export interface PaginationMeta {
-    total: number;
-    page: number;
-    limit: number;
-    totalPages: number;
-    hasNext: boolean;
-    hasPrev: boolean;
-}
-
-export interface PaginatedResponse<T> {
-    data: T[];
-    meta: PaginationMeta;
-}
+import { PaginatedResponse } from '@sip/shared-types';
 
 @Injectable()
 export class AdminService {
