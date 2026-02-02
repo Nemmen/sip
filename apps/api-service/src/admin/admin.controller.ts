@@ -1,6 +1,6 @@
 import { Controller, Get, Put, Delete, Query, Param, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
-import { AdminService } from './admin.service';
+import { AdminService, PaginatedResponse } from './admin.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
@@ -20,7 +20,7 @@ export class AdminController {
         @Query('status') status?: string,
         @Query('page') page?: string,
         @Query('limit') limit?: string,
-    ) {
+    ): Promise<PaginatedResponse<any>> {
         return this.adminService.getAllUsers({
             role,
             status,
@@ -35,7 +35,7 @@ export class AdminController {
         @Query('status') status?: string,
         @Query('page') page?: string,
         @Query('limit') limit?: string,
-    ) {
+    ): Promise<PaginatedResponse<any>> {
         return this.adminService.getAllInternships({
             status,
             page: page ? parseInt(page) : 1,
@@ -49,7 +49,7 @@ export class AdminController {
         @Query('status') status?: string,
         @Query('page') page?: string,
         @Query('limit') limit?: string,
-    ) {
+    ): Promise<PaginatedResponse<any>> {
         return this.adminService.getAllApplications({
             status,
             page: page ? parseInt(page) : 1,

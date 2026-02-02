@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
-interface PaginationMeta {
+export interface PaginationMeta {
     total: number;
     page: number;
     limit: number;
@@ -10,7 +10,7 @@ interface PaginationMeta {
     hasPrev: boolean;
 }
 
-interface PaginatedResponse<T> {
+export interface PaginatedResponse<T> {
     data: T[];
     meta: PaginationMeta;
 }
