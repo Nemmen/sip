@@ -56,7 +56,7 @@ Looks for: /opt/render/project/src/apps/api-service/dist/main.js ✅ (exists!)
 
 2. **Build Command** section:
    ```bash
-   npm install && npx prisma generate && npm run build
+   npm install --include=dev && npx prisma generate && npm run build
    ```
 
 3. **Pre-Deploy Command** section (Optional):

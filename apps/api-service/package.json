@@ -9,7 +9,7 @@
         "seed": "ts-node prisma/seed.ts"
     },
     "scripts": {
-        "prebuild": "rimraf dist",
+        "prebuild": "rm -rf dist || rmdir /s /q dist || true",
         "build": "nest build",
         "format": "prettier --write \"src/**/*.ts\"",
         "start": "nest start",

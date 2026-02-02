@@ -17,7 +17,7 @@ If Render isn't automatically picking up `render.yaml`, manually configure via t
 | **Region** | Choose closest to your users |
 | **Branch** | `main` |
 | **Root Directory** | `apps/api-service` |
-| **Build Command** | `npm install && npx prisma generate && npm run build` |
+| **Build Command** | `npm install --include=dev && npx prisma generate && npm run build` |
 | **Start Command** | `node dist/main.js` |
 | **Plan** | `Starter` ($7/month) |
 
