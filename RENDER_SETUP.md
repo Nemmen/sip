@@ -18,7 +18,7 @@ If Render isn't automatically picking up `render.yaml`, manually configure via t
 | **Branch** | `main` |
 | **Root Directory** | `apps/api-service` |
 | **Build Command** | `npm install --include=dev && npx prisma generate && npm run build` |
-| **Start Command** | `node dist/main.js` |
+| **Start Command** | `node dist/apps/api-service/src/main.js` |
 | **Plan** | `Starter` ($7/month) |
 
 ⚠️ **CRITICAL**: Set **Root Directory** to `apps/api-service` - this is the key fix!

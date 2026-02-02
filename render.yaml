@@ -18,7 +18,7 @@ services:
     runtime: node
     rootDir: apps/api-service
     buildCommand: npm install --include=dev && npx prisma generate && npm run build
-    startCommand: node dist/main.js
+    startCommand: node dist/apps/api-service/src/main.js
     envVars:
       - key: NODE_ENV
         value: production
