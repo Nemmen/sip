@@ -66,7 +66,7 @@ Looks for: /opt/render/project/src/apps/api-service/dist/main.js ✅ (exists!)
 
 4. **Start Command** section:
    ```bash
-   node apps/api-service/dist/apps/api-service/src/main.js
+   bash apps/api-service/start.sh
    ```
 
 5. **Root Directory** section (MOST IMPORTANT):

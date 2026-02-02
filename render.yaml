@@ -17,7 +17,7 @@ services:
     plan: starter
     runtime: node
     buildCommand: npm install --include=dev && npx prisma generate --schema=apps/api-service/prisma/schema.prisma && npm run build --filter=api-service
-    startCommand: node apps/api-service/dist/apps/api-service/src/main.js
+    startCommand: bash apps/api-service/start.sh
     envVars:
       - key: NODE_ENV
         value: production
