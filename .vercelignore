@@ -1,0 +1,53 @@
+# Ignore backend services - they won't be deployed to Vercel
+apps/api-service/
+apps/ai-engine/
+
+# Infrastructure
+infrastructure/
+docker-compose.yml
+*.Dockerfile
+Dockerfile
+
+# Database
+*.sql
+*.bat
+*.ps1
+database-setup.sql
+setup-database.bat
+setup-postgres-help.ps1
+
+# Documentation (optional - remove if you want docs deployed)
+*.md
+!README.md
+
+# Development
+.env
+.env.local
+.env*.local
+*.log
+dump.rdb
+
+# Dependencies
+node_modules/
+.turbo/
+.next/
+dist/
+build/
+
+# Testing
+coverage/
+.nyc_output/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Migration files
+apps/api-service/prisma/migrations/

@@ -14,10 +14,14 @@ If Render isn't automatically picking up `render.yaml`, manually configure via t
 |-------|-------|
 | **Name** | `sip-api-service` |
 | **Environment** | `Node` |
+| **Region** | Choose closest to your users |
 | **Branch** | `main` |
-| **Build Command** | `npm install && npm run prisma:generate && npm run build --filter=api-service` |
-| **Start Command** | `bash apps/api-service/start.sh` |
+| **Root Directory** | `apps/api-service` |
+| **Build Command** | `npm install && npx prisma generate && npm run build` |
+| **Start Command** | `node dist/main.js` |
 | **Plan** | `Starter` ($7/month) |
+
+⚠️ **CRITICAL**: Set **Root Directory** to `apps/api-service` - this is the key fix!
 
 ### Environment Variables
 
@@ -25,18 +29,30 @@ Click **Environment** and add:
 
 ```
 NODE_ENV=production
-PORT=3001
+PORT=10000
 JWT_SECRET=<generate-32-char-secret>
+REFRESH_TOKEN_SECRET=<generate-32-char-secret>
+ENCRYPTION_KEY=<generate-32-char-encryption-key>
 CORS_ORIGIN=https://<your-vercel-domain>
 OPENAI_API_KEY=<from-openai-dashboard>
-AWS_ACCESS_KEY_ID=<optional>
-AWS_SECRET_ACCESS_KEY=<optional>
+S3_ENDPOINT=https://sgp1.digitaloceanspaces.com
+S3_BUCKET=sip-assets
+S3_ACCESS_KEY=<your-access-key>
+S3_SECRET_KEY=<your-secret-key>
+S3_REGION=sgp1
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=<your-email>
+SMTP_PASSWORD=<your-app-password>
+KYC_API_KEY=<your-kyc-api-key>
+KYC_API_SECRET=<your-kyc-secret>
 ```
 
 **Database URLs** (add after creating databases):
 ```
 DATABASE_URL=postgresql://user:pass@host:5432/sip
 REDIS_URL=redis://:password@host:port
+AI_ENGINE_URL=https://sip-ai-engine.onrender.com
 ```
 
 ### Deploy
@@ -86,15 +102,20 @@ Click **Create Web Service** → Wait for build to complete
 | Field | Value |
 |-------|-------|
 | **Name** | `sip-ai-engine` |
-| **Environment** | `Python 3.12` |
+| **Environment** | `Python 3` |
 | **Branch** | `main` |
-| **Build Command** | `pip install -r apps/ai-engine/requirements.txt` |
-| **Start Command** | `cd apps/ai-engine && python -m uvicorn main:app --host 0.0.0.0 --port 5000` |
+| **Root Directory** | `apps/ai-engine` |
+| **Build Command** | `pip install -r requirements.txt` |
+| **Start Command** | `python -m uvicorn main:app --host 0.0.0.0 --port 10000` |
+| **Plan** | `Starter` ($7/month) |
+
+⚠️ **CRITICAL**: Set **Root Directory** to `apps/ai-engine`
 
 ### Environment Variables
 
 ```
 PYTHONUNBUFFERED=true
+PORT=10000
 OPENAI_API_KEY=<from-openai-dashboard>
 DATABASE_URL=<from-postgresql>
 ```
@@ -134,12 +155,19 @@ INFO:     Uvicorn running on http://0.0.0.0:5000
 ```
 
 ---
+ or `Error: Cannot find module '/opt/render/project/src/apps/api-service/dist/main.js'`
 
-## Common Issues & Fixes
+**Root Cause**: Incorrect Root Directory configuration in Render dashboard.
 
-### Issue: Start Command Not Found
+**Solution**:
+1. Go to your service → **Settings** → **Build & Deploy**
+2. Set **Root Directory** to `apps/api-service`
+3. Update **Build Command** to: `npm install && npx prisma generate && npm run build`
+4. Update **Start Command** to: `node dist/main.js`
+5. Click **Save Changes**
+6. Go to **Manual Deploy** → **Clear build cache & deploy**
 
-**Error**: `Cannot find module 'dist/main.js'`
+This tells Render to work from the `apps/api-service` directory, so when it runs `node dist/main.js`, it's looking in `apps/api-service/dist/main.js` (which is correct).
 
 **Solution**:
 1. Verify build command output: Check **Logs** → **Build**

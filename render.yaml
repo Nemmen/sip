@@ -16,13 +16,14 @@ services:
     name: sip-api-service
     plan: starter
     runtime: node
-    buildCommand: npm install && npm run prisma:generate && npm run build --filter=api-service
-    startCommand: bash apps/api-service/start.sh
+    rootDir: apps/api-service
+    buildCommand: npm install && npx prisma generate && npm run build
+    startCommand: node dist/main.js
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
-        value: 3001
+        value: 10000
       - key: DATABASE_URL
         fromDatabase:
           name: sip-postgres
@@ -33,25 +34,52 @@ services:
           property: connectionString
       - key: JWT_SECRET
         sync: false
+      - key: REFRESH_TOKEN_SECRET
+        sync: false
+      - key: ENCRYPTION_KEY
+        sync: false
       - key: CORS_ORIGIN
         sync: false
       - key: OPENAI_API_KEY
         sync: false
-      - key: AWS_ACCESS_KEY_ID
+      - key: S3_ENDPOINT
         sync: false
-      - key: AWS_SECRET_ACCESS_KEY
+      - key: S3_BUCKET
         sync: false
+      - key: S3_ACCESS_KEY
+        sync: false
+      - key: S3_SECRET_KEY
+        sync: false
+      - key: S3_REGION
+        sync: false
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_PORT
+        sync: false
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASSWORD
+        sync: false
+      - key: KYC_API_KEY
+        sync: false
+      - key: KYC_API_SECRET
+        sync: false
+      - key: AI_ENGINE_URL
+        value: "${AI_ENGINE_URL}"
 
   # AI Engine
   - type: web
     name: sip-ai-engine
     plan: starter
-    runtime: python-3.12
-    buildCommand: "pip install -r apps/ai-engine/requirements.txt"
-    startCommand: "cd apps/ai-engine && python -m uvicorn main:app --host 0.0.0.0 --port 5000"
+    runtime: python
+    rootDir: apps/ai-engine
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python -m uvicorn main:app --host 0.0.0.0 --port 10000"
     envVars:
       - key: PYTHONUNBUFFERED
         value: "true"
+      - key: PORT
+        value: 10000
       - key: OPENAI_API_KEY
         sync: false
       - key: DATABASE_URL
