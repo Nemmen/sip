@@ -83,13 +83,12 @@ function DashboardContent() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <UserAvatar 
-                name={user?.companyProfile?.companyName}
-                email={user?.email}
+                name={user?.employerProfile?.companyName}
                 size="xl"
               />
               <div>
                 <h1 className="text-3xl font-bold mb-1">
-                  {user?.companyProfile?.companyName || 'Your Company'}
+                  {user?.employerProfile?.companyName || 'Your Company'}
                 </h1>
                 <p className="text-white/80">
                   {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}

@@ -63,7 +63,11 @@ export default function RegisterPage() {
     setLoading(true);
     
     try {
-      await register(formData.email, formData.password, formData.role);
+      await register({
+        email: formData.email,
+        password: formData.password,
+        role: formData.role as 'STUDENT' | 'EMPLOYER',
+      });
     } catch (error: any) {
       setGeneralError(error.response?.data?.message || 'Registration failed. Please try again.');
     } finally {

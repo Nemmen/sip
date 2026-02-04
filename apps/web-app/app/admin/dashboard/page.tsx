@@ -75,7 +75,14 @@ function DashboardContent() {
       );
 
       // Generate recent activity timeline
-      const activity = [];
+      const activity: Array<{
+        id: string;
+        title: string;
+        description: string;
+        timestamp: string;
+        status: string;
+        actor: string;
+      }> = [];
       
       // Recent KYC submissions
       kycData.slice(0, 3).forEach((k: any) => {

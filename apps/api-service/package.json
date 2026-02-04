@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "SIP NestJS Backend API",
     "engines": {
-        "node": "20.x"
+        "node": ">=18.0.0"
     },
     "prisma": {
         "seed": "ts-node prisma/seed.ts"

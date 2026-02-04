@@ -116,17 +116,17 @@ function AuditLogsContent() {
     }
   };
 
-  const getActionBadgeVariant = (action: string): string => {
-    const actionMap: Record<string, string> = {
+  const getActionBadgeVariant = (action: string): 'default' | 'success' | 'warning' | 'danger' | 'info' => {
+    const actionMap: Record<string, 'default' | 'success' | 'warning' | 'danger' | 'info'> = {
       CREATE: 'success',
       UPDATE: 'warning',
-      DELETE: 'error',
+      DELETE: 'danger',
       LOGIN: 'info',
       LOGOUT: 'default',
       STATUS_CHANGE: 'warning',
       PUBLISH: 'success',
-      CLOSE: 'error',
-      WITHDRAW: 'error',
+      CLOSE: 'danger',
+      WITHDRAW: 'danger',
     };
     return actionMap[action] || 'default';
   };

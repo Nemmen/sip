@@ -79,7 +79,6 @@ function EmployerApplicationsContent() {
         <StatCard
           title="Pending Review"
           value={stats.pending}
-          valueColor="text-orange-600"
           icon={
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -89,7 +88,6 @@ function EmployerApplicationsContent() {
         <StatCard
           title="Shortlisted"
           value={stats.shortlisted}
-          valueColor="text-blue-600"
           icon={
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
@@ -99,7 +97,6 @@ function EmployerApplicationsContent() {
         <StatCard
           title="Accepted"
           value={stats.accepted}
-          valueColor="text-green-600"
           icon={
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -183,8 +180,7 @@ function EmployerApplicationsContent() {
         <EmptyState
           title="No Applications Yet"
           description="Applications will appear here when students apply to your internships."
-          actionLabel="View Internships"
-          onAction={() => router.push('/employer/internships')}
+          action={{ label: "View Internships", onClick: () => router.push('/employer/internships') }}
         />
       )}
     </div>

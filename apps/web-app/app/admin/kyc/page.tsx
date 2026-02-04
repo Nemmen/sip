@@ -155,7 +155,6 @@ function AdminKYCContent() {
         <StatCard
           title="Pending Review"
           value={stats.pending}
-          valueColor="text-orange-600"
           icon={
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -165,7 +164,6 @@ function AdminKYCContent() {
         <StatCard
           title="Approved"
           value={stats.approved}
-          valueColor="text-green-600"
           icon={
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -175,7 +173,6 @@ function AdminKYCContent() {
         <StatCard
           title="Rejected"
           value={stats.rejected}
-          valueColor="text-red-600"
           icon={
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -341,8 +338,7 @@ function AdminKYCContent() {
               ? "No pending KYC submissions at the moment."
               : `No ${filter.toLowerCase()} KYC records found.`
           }
-          actionLabel="Refresh"
-          onAction={loadKYC}
+          action={{ label: "Refresh", onClick: loadKYC }}
         />
       )}
     </div>

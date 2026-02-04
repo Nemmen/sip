@@ -189,7 +189,6 @@ function AdminUserDetailContent() {
                     <UserAvatar 
                       name={getUserName()} 
                       size="lg"
-                      role={user.role}
                     />
                     <div>
                       <h3 className="text-lg font-semibold text-[var(--text-primary)]">{getUserName()}</h3>

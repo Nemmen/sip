@@ -223,7 +223,7 @@ function AdminInternshipDetailsContent() {
               <CardContent>
                 <div className="flex flex-wrap gap-2">
                   {internship.requiredSkills.map((skill: string, index: number) => (
-                    <Badge key={index} variant="primary">
+                    <Badge key={index} variant="info">
                       {skill}
                     </Badge>
                   ))}
