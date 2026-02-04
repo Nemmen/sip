@@ -120,7 +120,7 @@ Visit `http://localhost:3000` to verify everything works.
 npm i -g vercel
 
 # Login to Vercel
-vercel login
+
 
 # Deploy from project root
 cd d:\web_all\sip

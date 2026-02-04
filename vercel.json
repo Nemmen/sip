@@ -6,12 +6,8 @@
   "installCommand": "npm install",
   "framework": "nextjs",
   "functions": {
-    "apps/web-app/api/**/*.py": {
-      "runtime": "python3.9",
-      "maxDuration": 30
-    },
-    "apps/web-app/app/api/**/*.ts": {
-      "maxDuration": 30
+    "api/ai/*.py": {
+      "runtime": "@vercel/python@4.3.1"
     }
   },
   "rewrites": [
@@ -24,12 +20,6 @@
       "destination": "/api/v1/:path*"
     }
   ],
-  "env": {
-    "DATABASE_URL": "@database_url",
-    "JWT_SECRET": "@jwt_secret",
-    "JWT_REFRESH_SECRET": "@jwt_refresh_secret",
-    "NEXT_PUBLIC_API_URL": "@next_public_api_url"
-  },
   "headers": [
     {
       "source": "/api/:path*",

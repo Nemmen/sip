@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
             where: {
                 studentId: auth.user.userId,
             },
-            orderBy: { createdAt: 'desc' },
+            orderBy: { appliedAt: 'desc' },
             include: {
                 internship: {
                     select: {

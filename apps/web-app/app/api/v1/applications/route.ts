@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
                 where,
                 skip: (page - 1) * limit,
                 take: limit,
-                orderBy: { createdAt: 'desc' },
+                orderBy: { appliedAt: 'desc' },
                 include: {
                     internship: {
                         select: {

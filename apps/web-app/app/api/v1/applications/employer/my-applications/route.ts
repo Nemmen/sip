@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
                     employerId: auth.user.userId,
                 },
             },
-            orderBy: { createdAt: 'desc' },
+            orderBy: { appliedAt: 'desc' },
             include: {
                 internship: {
                     select: {

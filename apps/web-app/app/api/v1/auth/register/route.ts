@@ -1,12 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-const prisma = new PrismaClient();
-
 const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-jwt-key';
-const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || 'your-super-secret-refresh-key';
+const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || process.env.REFRESH_TOKEN_SECRET || 'your-super-secret-refresh-key';
 
 export async function POST(request: NextRequest) {
     try {
@@ -66,10 +64,10 @@ export async function POST(request: NextRequest) {
             accessToken,
             refreshToken,
         });
-    } catch (error) {
+    } catch (error: any) {
         console.error('Registration error:', error);
         return NextResponse.json(
-            { message: 'Internal server error' },
+            { message: 'Internal server error', error: error?.message || 'Unknown error' },
             { status: 500 }
         );
     }

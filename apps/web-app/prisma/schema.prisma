@@ -1,4 +1,4 @@
-// This is your Prisma schema file for Vercel serverless deployment
+// This is your Prisma schema file
 
 generator client {
   provider = "prisma-client-js"
@@ -55,7 +55,6 @@ enum ApplicationStatus {
   ACCEPTED
   REJECTED
   WITHDRAWN
-  APPLIED
 }
 
 enum MilestoneStatus {
@@ -102,9 +101,7 @@ model User {
   role          UserRole
   status        UserStatus @default(PENDING_VERIFICATION)
   emailVerified Boolean    @default(false) @map("email_verified")
-  kycStatus     KYCStatus  @default(NOT_SUBMITTED) @map("kyc_status")
-  kycSubmittedAt DateTime? @map("kyc_submitted_at")
-  kycVerifiedAt  DateTime? @map("kyc_verified_at")
+  kycStatus     KYCStatus? @map("kyc_status")
   
   refreshToken  String?    @map("refresh_token")
   lastLoginAt   DateTime?  @map("last_login_at")
@@ -204,7 +201,6 @@ model Internship {
   employerId          String           @map("employer_id")
   title               String
   description         String           @db.Text
-  company             String?
   type                InternshipType
   status              InternshipStatus @default(DRAFT)
   location            String
@@ -236,14 +232,13 @@ model Application {
   internshipId String            @map("internship_id")
   studentId    String            @map("student_id")
   status       ApplicationStatus @default(SUBMITTED)
-  coverLetter  String?           @map("cover_letter") @db.Text
+  coverLetter  String            @map("cover_letter") @db.Text
   resumeUrl    String?           @map("resume_url")
   aiMatchScore Float?            @map("ai_match_score")
   interviewDate DateTime?        @map("interview_date")
   interviewNotes String?         @map("interview_notes") @db.Text
   
   appliedAt    DateTime          @default(now()) @map("applied_at")
-  createdAt    DateTime          @default(now()) @map("created_at")
   updatedAt    DateTime          @updatedAt @map("updated_at")
 
   internship   Internship        @relation(fields: [internshipId], references: [id], onDelete: Cascade)
@@ -300,8 +295,7 @@ model EscrowTransaction {
 
 model Message {
   id             String    @id @default(uuid())
-  conversationId String?   @map("conversation_id")
-  applicationId  String?   @map("application_id")
+  conversationId String    @map("conversation_id")
   senderId       String    @map("sender_id")
   receiverId     String    @map("receiver_id")
   content        String    @db.Text
@@ -355,4 +349,16 @@ model AuditLog {
   @@index([action])
   @@index([createdAt])
   @@map("audit_logs")
+}
+
+model SkillEmbedding {
+  id         String   @id @default(uuid())
+  skillName  String   @unique @map("skill_name")
+  embedding  String?  // JSON string for vector data
+  category   String
+  
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@index([category])
+  @@map("skill_embeddings")
 }
