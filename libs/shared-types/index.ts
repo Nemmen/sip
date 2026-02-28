@@ -177,7 +177,7 @@ export interface EscrowTransaction {
     transactionId?: string;
     initiatedAt: Date;
     completedAt?: Date;
-    metadata?: Record<string, any>;
+    metadata?: Record<string, unknown>;
 }
 
 // Messaging Types
@@ -231,7 +231,7 @@ export interface MatchResult {
 }
 
 // API Response Types
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T = unknown> {
     success: boolean;
     data?: T;
     error?: string;
@@ -274,7 +274,7 @@ export interface AuditLog {
     action: AuditAction;
     resource: string;
     resourceId?: string;
-    metadata?: Record<string, any>;
+    metadata?: Record<string, unknown>;
     ipAddress: string;
     userAgent: string;
     createdAt: Date;
