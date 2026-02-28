@@ -106,13 +106,13 @@ function DashboardContent() {
                 <h1 className="text-3xl font-bold mb-1">
                   Welcome back, {user?.studentProfile?.fullName?.split(' ')[0] || user?.email?.split('@')[0]}! 👋
                 </h1>
-                <p className="text-blue-100">
+                <p className="text-white/70">
                   {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                 </p>
               </div>
             </div>
             {user?.kycStatus === 'APPROVED' && (
-              <div className="flex items-center gap-2 bg-green-500 bg-opacity-20 px-4 py-2 rounded-lg border border-green-400">
+              <div className="flex items-center gap-2 bg-green-500 bg-opacity-20 px-4 py-2 border border-green-400">
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
@@ -125,25 +125,25 @@ function DashboardContent() {
 
       {/* Profile Completeness Alert */}
       {profileCompleteness < 100 && (
-        <div className="mb-6 p-5 bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-lg">
+        <div className="mb-6 p-5 bg-gradient-to-r from-[var(--accent)]/10 to-[var(--accent)]/5 border-2 border-[var(--accent)]/30">
           <div className="flex items-start gap-4">
-            <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center text-yellow-600 text-2xl flex-shrink-0">
+            <div className="w-12 h-12 bg-[var(--accent)]/20 flex items-center justify-center text-[var(--accent)] text-2xl flex-shrink-0">
               📊
             </div>
             <div className="flex-1">
               <div className="flex items-center justify-between mb-2">
-                <h3 className="font-semibold text-gray-900">
+                <h3 className="font-semibold text-[var(--primary)]">
                   Complete your profile
                 </h3>
                 <span className="text-2xl font-bold text-yellow-600">{profileCompleteness}%</span>
               </div>
-              <p className="text-sm text-gray-700 mb-3">
+              <p className="text-sm text-[var(--text-secondary)] mb-3">
                 A complete profile increases your chances of getting hired by 3x
               </p>
               <div className="mb-4">
-                <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
+                <div className="h-3 bg-[var(--background-alt)] overflow-hidden">
                   <div 
-                    className="h-full bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full transition-all duration-500" 
+                    className="h-full bg-gradient-to-r from-[var(--accent)] to-[var(--accent-hover)] transition-all duration-500" 
                     style={{ width: `${profileCompleteness}%` }}
                   />
                 </div>
@@ -162,7 +162,7 @@ function DashboardContent() {
 
       {/* KYC Alert */}
       {user?.kycStatus !== 'APPROVED' && (
-        <div className={`mb-6 p-5 rounded-lg border ${
+        <div className={`mb-6 p-5 border-2 ${
           user?.kycStatus === 'REJECTED' 
             ? 'bg-gradient-to-r from-red-50 to-pink-50 border-red-200' 
             : user?.kycStatus === 'UNDER_REVIEW'
@@ -172,7 +172,7 @@ function DashboardContent() {
             : 'bg-gradient-to-r from-yellow-50 to-orange-50 border-yellow-200'
         }`}>
           <div className="flex items-start gap-4">
-            <div className={`w-12 h-12 rounded-full flex items-center justify-center text-2xl flex-shrink-0 ${
+            <div className={`w-12 h-12 flex items-center justify-center text-2xl flex-shrink-0 ${
               user?.kycStatus === 'REJECTED' 
                 ? 'bg-red-100 text-red-600' 
                 : user?.kycStatus === 'UNDER_REVIEW'
@@ -184,13 +184,13 @@ function DashboardContent() {
               {user?.kycStatus === 'REJECTED' ? '❌' : user?.kycStatus === 'UNDER_REVIEW' ? '⏳' : user?.kycStatus === 'PENDING' ? '📋' : '⚠️'}
             </div>
             <div className="flex-1">
-              <h3 className="font-semibold text-gray-900 mb-1">
+              <h3 className="font-semibold text-[var(--primary)] mb-1">
                 {user?.kycStatus === 'PENDING' && 'KYC Verification Pending'}
                 {user?.kycStatus === 'UNDER_REVIEW' && 'KYC Under Review'}
                 {user?.kycStatus === 'REJECTED' && 'KYC Verification Rejected'}
                 {!user?.kycStatus && 'Verify your profile to unlock all features'}
               </h3>
-              <p className="text-sm text-gray-700 mb-3">
+              <p className="text-sm text-[var(--text-secondary)] mb-3">
                 {!user?.kycStatus 
                   ? 'Verified profiles get 3x more responses from employers'
                   : user?.kycStatus === 'REJECTED'
@@ -264,7 +264,7 @@ function DashboardContent() {
               <div className="flex items-center justify-between">
                 <div>
                   <CardTitle>Recommended for You</CardTitle>
-                  <p className="text-sm text-gray-600 mt-1">Based on your profile and interests</p>
+                  <p className="text-sm text-[var(--text-secondary)] mt-1">Based on your profile and interests</p>
                 </div>
                 <Button 
                   variant="outline" 
@@ -285,21 +285,21 @@ function DashboardContent() {
                   {internships.slice(0, 4).map((internship: any) => (
                     <div
                       key={internship.id}
-                      className="p-4 rounded-lg border border-gray-200 hover:border-blue-500 hover:shadow-md transition-all cursor-pointer group"
+                      className="p-4 border-2 border-[var(--border)] hover:border-[var(--accent)] hover:shadow-md transition-all cursor-pointer group"
                       onClick={() => router.push(`/student/internships/${internship.id}`)}
                     >
                       <div className="flex justify-between items-start mb-3">
                         <div className="flex-1">
-                          <h4 className="font-semibold text-gray-900 group-hover:text-blue-600 transition">
+                          <h4 className="font-semibold text-[var(--primary)] group-hover:text-[var(--accent)] transition">
                             {internship.title}
                           </h4>
-                          <p className="text-sm text-gray-600 mt-1">
+                          <p className="text-sm text-[var(--text-secondary)] mt-1">
                             {internship.employer?.companyProfile?.companyName || 'Company'}
                           </p>
                         </div>
                         <StatusBadge status={internship.status} />
                       </div>
-                      <div className="flex flex-wrap gap-3 text-sm text-gray-600">
+                      <div className="flex flex-wrap gap-3 text-sm text-[var(--text-secondary)]">
                         <div className="flex items-center gap-1">
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -323,12 +323,12 @@ function DashboardContent() {
                       {internship.skills && internship.skills.length > 0 && (
                         <div className="flex flex-wrap gap-2 mt-3">
                           {internship.skills.slice(0, 4).map((skill: string) => (
-                            <span key={skill} className="px-2 py-1 bg-blue-50 text-blue-700 text-xs rounded-full">
+                            <span key={skill} className="px-2 py-1 bg-[var(--accent)]/10 text-[var(--primary)] text-xs border border-[var(--accent)]/30">
                               {skill}
                             </span>
                           ))}
                           {internship.skills.length > 4 && (
-                            <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">
+                            <span className="px-2 py-1 bg-[var(--background)] text-[var(--text-secondary)] text-xs border border-[var(--border)]">
                               +{internship.skills.length - 4} more
                             </span>
                           )}
@@ -394,16 +394,16 @@ function DashboardContent() {
                   {applications.slice(0, 5).map((app: any) => (
                     <div
                       key={app.id}
-                      className="p-3 rounded-lg border border-gray-200 hover:border-blue-500 transition cursor-pointer"
+                      className="p-3 border-2 border-[var(--border)] hover:border-[var(--accent)] transition cursor-pointer"
                       onClick={() => router.push(`/student/applications/${app.id}`)}
                     >
                       <div className="flex justify-between items-start mb-2">
-                        <p className="text-sm font-medium text-gray-900 line-clamp-1">
+                        <p className="text-sm font-medium text-[var(--primary)] line-clamp-1">
                           {app.internship?.title}
                         </p>
                       </div>
                       <div className="flex items-center justify-between">
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-[var(--text-muted)]">
                           {new Date(app.createdAt).toLocaleDateString()}
                         </p>
                         <StatusBadge status={app.status} size="sm" />
@@ -492,15 +492,15 @@ function DashboardContent() {
                     .filter((a: any) => a.internship?.applicationDeadline && new Date(a.internship.applicationDeadline) > new Date())
                     .slice(0, 3)
                     .map((app: any) => (
-                      <div key={app.id} className="flex items-center gap-3 p-2 rounded-lg bg-gray-50">
-                        <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center text-red-600 font-bold text-sm">
+                      <div key={app.id} className="flex items-center gap-3 p-2 bg-[var(--background)]">
+                        <div className="w-10 h-10 bg-red-100 flex items-center justify-center text-red-600 font-bold text-sm">
                           {new Date(app.internship.applicationDeadline).getDate()}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-gray-900 truncate">
+                          <p className="text-sm font-medium text-[var(--primary)] truncate">
                             {app.internship.title}
                           </p>
-                          <p className="text-xs text-gray-500">
+                          <p className="text-xs text-[var(--text-muted)]">
                             {new Date(app.internship.applicationDeadline).toLocaleDateString()}
                           </p>
                         </div>

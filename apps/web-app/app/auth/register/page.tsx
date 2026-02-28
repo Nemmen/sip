@@ -84,8 +84,7 @@ export default function RegisterPage() {
       {/* Left Side - Brand */}
       <div className="hidden lg:flex lg:w-1/2 bg-[var(--primary)] flex-col justify-center items-center p-12">
         <div className="max-w-md text-center">
-          <img src="/logo-sip.png" alt="SIP Logo" className="w-32 h-auto mx-auto mb-8 drop-shadow-lg" />
-          <h1 className="text-4xl font-bold text-white mb-4">Join Our Platform</h1>
+          <img src="/logo-sip.png" alt="SIP Logo" className="w-56 h-auto mx-auto mb-8 drop-shadow-lg" />
           <p className="text-white/80 text-lg mb-8">
             Create your account and start your journey to finding the perfect internship or hiring top talent.
           </p>
@@ -112,8 +111,7 @@ export default function RegisterPage() {
         <div className="w-full max-w-md">
           {/* Mobile Logo */}
           <div className="lg:hidden text-center mb-8">
-            <img src="/logo-sip.png" alt="SIP Logo" className="w-20 h-auto mx-auto mb-4" />
-            <h1 className="text-2xl font-bold text-[var(--primary)]">Smart Internship Portal</h1>
+            <img src="/logo-sip.png" alt="SIP Logo" className="w-40 h-auto mx-auto mb-4" />
           </div>
 
           {/* Register Card */}

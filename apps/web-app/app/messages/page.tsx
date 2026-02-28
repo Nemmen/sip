@@ -209,7 +209,7 @@ function MessagesContent() {
                               {new Date(conversation.createdAt).toLocaleDateString()}
                             </span>
                             {!conversation.readAt && conversation.receiverId === user?.id && (
-                              <div className="w-2 h-2 bg-blue-600 rounded-full" />
+                              <div className="w-2 h-2 bg-[var(--accent)]" />
                             )}
                           </div>
                         </div>
@@ -235,16 +235,16 @@ function MessagesContent() {
             ) : (
               <>
                 {/* Chat Header */}
-                <div className="p-4 border-b border-gray-200 bg-white">
+                <div className="p-4 border-b-2 border-[var(--border)] bg-white">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-semibold">
+                    <div className="w-10 h-10 bg-[var(--primary)] flex items-center justify-center text-white font-bold">
                       {getUserName(selectedConversation).charAt(0).toUpperCase()}
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-900">
+                      <h3 className="font-bold text-[var(--primary)]">
                         {getUserName(selectedConversation)}
                       </h3>
-                      <p className="text-sm text-gray-600">
+                      <p className="text-sm text-[var(--text-secondary)]">
                         {getUserRole(selectedConversation)}
                       </p>
                     </div>
@@ -252,14 +252,14 @@ function MessagesContent() {
                 </div>
 
                 {/* Messages */}
-                <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
+                <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-[var(--background)]">
                   {loadingMessages ? (
                     <div className="flex items-center justify-center h-full">
                       <LoadingSpinner size="lg" />
                     </div>
                   ) : messages.length === 0 ? (
                     <div className="flex items-center justify-center h-full">
-                      <p className="text-gray-600">No messages yet. Start the conversation!</p>
+                      <p className="text-[var(--text-secondary)]">No messages yet. Start the conversation!</p>
                     </div>
                   ) : (
                     messages.map((message) => {
@@ -271,10 +271,10 @@ function MessagesContent() {
                           className={`flex ${isSent ? 'justify-end' : 'justify-start'}`}
                         >
                           <div
-                            className={`max-w-[70%] rounded-lg p-3 ${
+                            className={`max-w-[70%] p-3 ${
                               isSent
-                                ? 'bg-blue-600 text-white'
-                                : 'bg-white text-gray-900 border border-gray-200'
+                                ? 'bg-[var(--primary)] text-white'
+                                : 'bg-white text-[var(--primary)] border-2 border-[var(--border)]'
                             }`}
                           >
                             <p className="text-sm whitespace-pre-wrap">{message.content}</p>
@@ -301,7 +301,7 @@ function MessagesContent() {
                       value={newMessage}
                       onChange={(e) => setNewMessage(e.target.value)}
                       placeholder="Type your message..."
-                      className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="flex-1 px-4 py-2.5 border-2 border-[var(--border)] focus:outline-none focus:border-[var(--accent)] transition"
                       disabled={sending}
                     />
                     <Button type="submit" disabled={sending || !newMessage.trim()}>

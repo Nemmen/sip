@@ -39,11 +39,8 @@ export default function Home() {
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b-2 border-[var(--border)]">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center">
               <img src="/logo-sip.png" alt="SIP Logo" className="h-12 w-auto" />
-              <div>
-                <span className="font-bold text-[var(--primary)] text-lg tracking-wide">SMART INTERNSHIP PORTAL</span>
-              </div>
             </div>
             <div className="flex items-center gap-4">
               <Link 
@@ -116,49 +113,12 @@ export default function Home() {
             <div className="relative hidden lg:block">
               <div className="absolute -top-8 -left-8 w-72 h-72 bg-[var(--accent)]/20"></div>
               <div className="absolute -bottom-8 -right-8 w-72 h-72 bg-[var(--primary)]/10"></div>
-              <div className="relative bg-white border-2 border-[var(--border)] p-8 shadow-xl">
-                <div className="space-y-4">
-                  {/* Sample internship cards */}
-                  <div className="p-4 border-2 border-[var(--border)] hover:border-[var(--accent)] transition">
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="w-10 h-10 bg-[var(--primary)] flex items-center justify-center text-white font-bold">G</div>
-                      <div>
-                        <div className="font-semibold text-[var(--primary)]">Software Engineer Intern</div>
-                        <div className="text-sm text-[var(--text-secondary)]">Google India</div>
-                      </div>
-                    </div>
-                    <div className="flex gap-2">
-                      <span className="px-2 py-1 bg-emerald-50 text-emerald-700 text-xs font-semibold border border-emerald-200">₹50,000/mo</span>
-                      <span className="px-2 py-1 bg-blue-50 text-blue-700 text-xs font-semibold border border-blue-200">Remote</span>
-                    </div>
-                  </div>
-                  <div className="p-4 border-2 border-[var(--border)] hover:border-[var(--accent)] transition">
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="w-10 h-10 bg-[var(--accent)] flex items-center justify-center text-[var(--primary-dark)] font-bold">M</div>
-                      <div>
-                        <div className="font-semibold text-[var(--primary)]">Data Analyst Intern</div>
-                        <div className="text-sm text-[var(--text-secondary)]">Microsoft</div>
-                      </div>
-                    </div>
-                    <div className="flex gap-2">
-                      <span className="px-2 py-1 bg-emerald-50 text-emerald-700 text-xs font-semibold border border-emerald-200">₹45,000/mo</span>
-                      <span className="px-2 py-1 bg-purple-50 text-purple-700 text-xs font-semibold border border-purple-200">Hybrid</span>
-                    </div>
-                  </div>
-                  <div className="p-4 border-2 border-[var(--border)] hover:border-[var(--accent)] transition">
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="w-10 h-10 bg-emerald-600 flex items-center justify-center text-white font-bold">A</div>
-                      <div>
-                        <div className="font-semibold text-[var(--primary)]">Product Design Intern</div>
-                        <div className="text-sm text-[var(--text-secondary)]">Amazon</div>
-                      </div>
-                    </div>
-                    <div className="flex gap-2">
-                      <span className="px-2 py-1 bg-emerald-50 text-emerald-700 text-xs font-semibold border border-emerald-200">₹40,000/mo</span>
-                      <span className="px-2 py-1 bg-amber-50 text-amber-700 text-xs font-semibold border border-amber-200">In-Office</span>
-                    </div>
-                  </div>
-                </div>
+              <div className="relative">
+                <img 
+                  src="/hero-illustration.svg" 
+                  alt="SIP Platform - Dashboard Preview" 
+                  className="w-full h-auto drop-shadow-xl"
+                />
               </div>
             </div>
           </div>
@@ -321,9 +281,8 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
-              <div className="flex items-center gap-3 mb-4">
-                <img src="/logo-sip.png" alt="SIP Logo" className="h-10 w-auto" />
-                <span className="font-bold text-white">Smart Internship Portal</span>
+              <div className="flex items-center mb-4">
+                <img src="/logo-sip.png" alt="SIP Logo" className="h-16 w-auto" />
               </div>
               <p className="text-white/60 text-sm">
                 Connecting verified students with trusted employers for secure internship opportunities.
@@ -332,28 +291,28 @@ export default function Home() {
             <div>
               <h4 className="font-bold text-white mb-4 uppercase tracking-wide text-sm">For Students</h4>
               <ul className="space-y-2 text-white/60 text-sm">
-                <li><a href="#" className="hover:text-[var(--accent)] transition">Browse Internships</a></li>
-                <li><a href="#" className="hover:text-[var(--accent)] transition">How It Works</a></li>
-                <li><a href="#" className="hover:text-[var(--accent)] transition">Success Stories</a></li>
-                <li><a href="#" className="hover:text-[var(--accent)] transition">Resources</a></li>
+                <li><Link href="/auth/register" className="hover:text-[var(--accent)] transition">Browse Internships</Link></li>
+                <li><Link href="/auth/register" className="hover:text-[var(--accent)] transition">How It Works</Link></li>
+                <li><Link href="/auth/register" className="hover:text-[var(--accent)] transition">Success Stories</Link></li>
+                <li><Link href="/auth/register" className="hover:text-[var(--accent)] transition">Resources</Link></li>
               </ul>
             </div>
             <div>
               <h4 className="font-bold text-white mb-4 uppercase tracking-wide text-sm">For Employers</h4>
               <ul className="space-y-2 text-white/60 text-sm">
-                <li><a href="#" className="hover:text-[var(--accent)] transition">Post Internships</a></li>
-                <li><a href="#" className="hover:text-[var(--accent)] transition">Find Talent</a></li>
-                <li><a href="#" className="hover:text-[var(--accent)] transition">Pricing</a></li>
-                <li><a href="#" className="hover:text-[var(--accent)] transition">Enterprise</a></li>
+                <li><Link href="/auth/register?role=employer" className="hover:text-[var(--accent)] transition">Post Internships</Link></li>
+                <li><Link href="/auth/register?role=employer" className="hover:text-[var(--accent)] transition">Find Talent</Link></li>
+                <li><Link href="/auth/register?role=employer" className="hover:text-[var(--accent)] transition">Pricing</Link></li>
+                <li><Link href="/auth/register?role=employer" className="hover:text-[var(--accent)] transition">Enterprise</Link></li>
               </ul>
             </div>
             <div>
               <h4 className="font-bold text-white mb-4 uppercase tracking-wide text-sm">Company</h4>
               <ul className="space-y-2 text-white/60 text-sm">
-                <li><a href="#" className="hover:text-[var(--accent)] transition">About Us</a></li>
-                <li><a href="#" className="hover:text-[var(--accent)] transition">Contact</a></li>
-                <li><a href="#" className="hover:text-[var(--accent)] transition">Privacy Policy</a></li>
-                <li><a href="#" className="hover:text-[var(--accent)] transition">Terms of Service</a></li>
+                <li><Link href="/auth/login" className="hover:text-[var(--accent)] transition">About Us</Link></li>
+                <li><Link href="/auth/login" className="hover:text-[var(--accent)] transition">Contact</Link></li>
+                <li><Link href="/auth/login" className="hover:text-[var(--accent)] transition">Privacy Policy</Link></li>
+                <li><Link href="/auth/login" className="hover:text-[var(--accent)] transition">Terms of Service</Link></li>
               </ul>
             </div>
           </div>

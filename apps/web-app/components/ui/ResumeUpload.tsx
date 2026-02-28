@@ -106,7 +106,7 @@ export default function ResumeUpload({
           </label>
         ) : (
           <div className="flex items-center gap-3 flex-1">
-            <div className="flex-1 bg-green-50 border border-green-200 rounded-lg p-3">
+            <div className="flex-1 bg-emerald-50 border-2 border-emerald-200 p-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className="text-green-600">✓</span>

@@ -155,7 +155,7 @@ function StudentKYCContent() {
                     <select
                       value={formData.documentType}
                       onChange={(e) => setFormData({ ...formData, documentType: e.target.value })}
-                      className="w-full px-4 py-2 border border-[var(--border)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
+                      className="w-full px-4 py-2.5 border-2 border-[var(--border)] focus:outline-none focus:border-[var(--accent)] transition"
                       required
                     >
                       <option value="AADHAR">Aadhar Card</option>

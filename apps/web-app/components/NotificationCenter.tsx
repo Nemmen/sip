@@ -69,11 +69,11 @@ export function NotificationBell() {
     <div className="relative">
       <button
         onClick={() => setShowDropdown(!showDropdown)}
-        className="relative p-2 hover:bg-gray-100 rounded-lg transition"
+        className="relative p-2 hover:bg-[var(--background)] transition"
       >
         🔔
         {unreadCount > 0 && (
-          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+          <span className="absolute -top-1 -right-1 bg-[var(--error)] text-white text-xs w-5 h-5 flex items-center justify-center font-bold">
             {unreadCount > 99 ? '99+' : unreadCount}
           </span>
         )}
@@ -88,7 +88,7 @@ export function NotificationBell() {
           />
 
           {/* Dropdown */}
-          <div className="absolute right-0 mt-2 w-96 bg-white rounded-lg shadow-lg border border-[var(--border)] z-50">
+          <div className="absolute right-0 mt-2 w-96 bg-white shadow-lg border-2 border-[var(--border)] z-50">
             <div className="p-4 border-b border-[var(--border)] flex items-center justify-between">
               <h3 className="font-semibold text-[var(--primary)]">Notifications</h3>
               {unreadCount > 0 && (
@@ -121,7 +121,7 @@ export function NotificationBell() {
                           {notification.title}
                         </h4>
                         {!notification.read && (
-                          <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+                          <span className="w-2 h-2 bg-[var(--accent)]"></span>
                         )}
                       </div>
                       <p className="text-sm text-[var(--text-secondary)] mb-2">
@@ -253,7 +253,7 @@ export default function NotificationsPage() {
                 {notifications.map((notification) => (
                   <div
                     key={notification.id}
-                    className={`p-4 rounded-lg border border-[var(--border)] ${
+                    className={`p-4 border-2 border-[var(--border)] ${
                       !notification.read ? 'bg-blue-50' : ''
                     }`}
                   >

@@ -57,9 +57,8 @@ export function Navbar() {
         <div className="flex items-center justify-between h-16">
           {/* Left: Logo + Breadcrumb */}
           <div className="flex items-center gap-4 flex-1">
-            <Link href={`/${user.role.toLowerCase()}/dashboard`} className="flex items-center gap-3">
+            <Link href={`/${user.role.toLowerCase()}/dashboard`} className="flex items-center">
               <img src="/logo-sip.png" alt="SIP Logo" className="h-10 w-auto" />
-              <span className="hidden sm:block font-bold text-[var(--primary)] tracking-wide">SMART INTERNSHIP PORTAL</span>
             </Link>
           </div>
 

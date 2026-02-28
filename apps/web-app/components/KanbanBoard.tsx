@@ -90,19 +90,19 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
   };
 
   return (
-    <div className="w-full h-full flex flex-col bg-gradient-to-b from-gray-50 to-white rounded-lg border border-gray-200 overflow-hidden">
+    <div className="w-full h-full flex flex-col bg-gradient-to-b from-[var(--background)] to-white border-2 border-[var(--border)] overflow-hidden">
       {/* Header */}
-      <div className="px-6 py-4 bg-white border-b border-gray-200">
+      <div className="px-6 py-4 bg-white border-b-2 border-[var(--border)]">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-lg font-semibold text-gray-900">Application Pipeline</h2>
-            <p className="text-sm text-gray-600 mt-1">
-              Total: <span className="font-medium">{columns.reduce((sum, col) => sum + col.count, 0)}</span> applications
+            <h2 className="text-lg font-bold text-[var(--primary)]">Application Pipeline</h2>
+            <p className="text-sm text-[var(--text-secondary)] mt-1">
+              Total: <span className="font-semibold">{columns.reduce((sum, col) => sum + col.count, 0)}</span> applications
             </p>
           </div>
-          <div className="text-xs text-gray-500 flex items-center gap-2">
-            <div className="flex items-center gap-1 px-3 py-1.5 bg-gray-100 rounded-lg">
-              <span>📌 Drag columns to resize</span>
+          <div className="text-xs text-[var(--text-muted)] flex items-center gap-2">
+            <div className="flex items-center gap-1 px-3 py-1.5 bg-[var(--background)]">
+              <span>Drag columns to resize</span>
             </div>
           </div>
         </div>
@@ -112,20 +112,20 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
       <div
         ref={scrollContainerRef}
         onScroll={handleScroll}
-        className="flex-1 overflow-x-auto overflow-y-hidden bg-gradient-to-r from-gray-50 via-gray-50 to-gray-100 px-6 py-4"
+        className="flex-1 overflow-x-auto overflow-y-hidden bg-[var(--background)] px-6 py-4"
         style={{ scrollBehavior: 'smooth' }}
       >
         <div className="flex gap-4 h-full min-w-min pb-4">
           {columns.map((column, index) => (
             <div
               key={column.id}
-              className="relative flex flex-col bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden flex-shrink-0"
+              className="relative flex flex-col bg-white border-2 border-[var(--border)] shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden flex-shrink-0"
               style={{ width: columnWidths[column.id] || defaultColumnWidth }}
             >
               {/* Column Header */}
               <div
                 className={clsx(
-                  'px-4 py-3 border-b border-gray-200',
+                  'px-4 py-3 border-b-2 border-[var(--border)]',
                   column.color === 'blue' && 'bg-gradient-to-r from-blue-50 to-blue-50',
                   column.color === 'purple' && 'bg-gradient-to-r from-purple-50 to-purple-50',
                   column.color === 'yellow' && 'bg-gradient-to-r from-yellow-50 to-yellow-50',
@@ -138,7 +138,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
                   <div className="flex items-center gap-2 min-w-0">
                     <div
                       className={clsx(
-                        'w-3 h-3 rounded-full flex-shrink-0',
+                        'w-3 h-3 flex-shrink-0',
                         column.color === 'blue' && 'bg-blue-500',
                         column.color === 'purple' && 'bg-purple-500',
                         column.color === 'yellow' && 'bg-yellow-500',
@@ -147,9 +147,9 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
                         column.color === 'gray' && 'bg-gray-400'
                       )}
                     />
-                    <h3 className="font-semibold text-sm text-gray-900 truncate">{column.title}</h3>
+                    <h3 className="font-bold text-sm text-[var(--primary)] truncate">{column.title}</h3>
                   </div>
-                  <span className="inline-flex items-center justify-center min-w-fit px-2.5 py-1 rounded-full bg-gray-200 text-gray-700 text-xs font-medium">
+                  <span className="inline-flex items-center justify-center min-w-fit px-2.5 py-1 bg-[var(--background-alt)] text-[var(--primary)] text-xs font-bold">
                     {column.count}
                   </span>
                 </div>
@@ -169,22 +169,22 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
                           onItemClick?.(item, column.id);
                         }
                       }}
-                      className="p-3 bg-white border border-gray-200 rounded-lg hover:border-blue-400 hover:shadow-md cursor-pointer transition-all duration-150 group"
+                      className="p-3 bg-white border-2 border-[var(--border)] hover:border-[var(--accent)] hover:shadow-md cursor-pointer transition-all duration-150 group"
                     >
                       {/* Card Header */}
                       <div className="flex items-start justify-between gap-2 mb-2">
                         <div className="flex-1 min-w-0">
-                          <h4 className="font-medium text-sm text-gray-900 line-clamp-2 group-hover:text-blue-600 transition-colors">
+                          <h4 className="font-semibold text-sm text-[var(--primary)] line-clamp-2 group-hover:text-[var(--accent)] transition-colors">
                             {item.title}
                           </h4>
                           {item.subtitle && (
-                            <p className="text-xs text-gray-600 mt-1 truncate">{item.subtitle}</p>
+                          <p className="text-xs text-[var(--text-secondary)] mt-1 truncate">{item.subtitle}</p>
                           )}
                         </div>
                         {item.badge && (
                           <div
                             className={clsx(
-                              'px-2 py-1 rounded text-xs font-medium whitespace-nowrap flex-shrink-0',
+                              'px-2 py-1 text-xs font-semibold whitespace-nowrap flex-shrink-0',
                               item.badge.color === 'blue' && 'bg-blue-100 text-blue-700',
                               item.badge.color === 'green' && 'bg-green-100 text-green-700',
                               item.badge.color === 'red' && 'bg-red-100 text-red-700',
@@ -199,7 +199,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
 
                       {/* Card Description */}
                       {item.description && (
-                        <p className="text-xs text-gray-600 mb-3 line-clamp-2">{item.description}</p>
+                        <p className="text-xs text-[var(--text-secondary)] mb-3 line-clamp-2">{item.description}</p>
                       )}
 
                       {/* Card Footer with Tags and Meta */}
@@ -209,13 +209,13 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
                             {item.tags.slice(0, 3).map((tag, idx) => (
                               <span
                                 key={idx}
-                                className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700"
+                                className="inline-flex items-center px-2 py-0.5 text-xs font-semibold bg-[var(--background)] text-[var(--primary)] border border-[var(--border)]"
                               >
                                 {tag}
                               </span>
                             ))}
                             {item.tags.length > 3 && (
-                              <span className="inline-flex items-center px-2 py-0.5 text-xs font-medium text-gray-600">
+                              <span className="inline-flex items-center px-2 py-0.5 text-xs font-semibold text-[var(--text-secondary)]">
                                 +{item.tags.length - 3}
                               </span>
                             )}
@@ -223,7 +223,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
                         )}
 
                         {item.meta && (
-                          <p className="text-xs text-gray-500 border-t border-gray-100 pt-2">
+                          <p className="text-xs text-[var(--text-muted)] border-t border-[var(--border)] pt-2">
                             {item.meta}
                           </p>
                         )}

@@ -43,7 +43,7 @@ export function RouteGuard({ children, allowedRoles, requireKYC = false }: Route
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-screen bg-background">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+                <div className="animate-spin h-12 w-12 border-b-2 border-[var(--primary)]"></div>
             </div>
         );
     }

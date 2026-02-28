@@ -75,8 +75,7 @@ function LoginContent() {
       {/* Left Side - Brand */}
       <div className="hidden lg:flex lg:w-1/2 bg-[var(--primary)] flex-col justify-center items-center p-12">
         <div className="max-w-md text-center">
-          <img src="/logo-sip.png" alt="SIP Logo" className="w-32 h-auto mx-auto mb-8 drop-shadow-lg" />
-          <h1 className="text-4xl font-bold text-white mb-4">Smart Internship Portal</h1>
+          <img src="/logo-sip.png" alt="SIP Logo" className="w-56 h-auto mx-auto mb-8 drop-shadow-lg" />
           <p className="text-white/80 text-lg mb-8">
             Connect with verified employers and kickstart your career with secure, escrow-protected internships.
           </p>
@@ -104,8 +103,7 @@ function LoginContent() {
         <div className="w-full max-w-md">
           {/* Mobile Logo */}
           <div className="lg:hidden text-center mb-8">
-            <img src="/logo-sip.png" alt="SIP Logo" className="w-20 h-auto mx-auto mb-4" />
-            <h1 className="text-2xl font-bold text-[var(--primary)]">Smart Internship Portal</h1>
+            <img src="/logo-sip.png" alt="SIP Logo" className="w-40 h-auto mx-auto mb-4" />
           </div>
 
           {/* Login Card */}
@@ -148,9 +146,13 @@ function LoginContent() {
                   />
                   <span className="ml-2 text-[var(--text-secondary)]">Remember me</span>
                 </label>
-                <Link href="/auth/forgot-password" className="text-[var(--accent)] hover:text-[var(--accent-hover)] font-semibold">
+                <button 
+                  type="button"
+                  onClick={() => setGeneralError('Password reset is coming soon. Please contact support.')}
+                  className="text-[var(--accent)] hover:text-[var(--accent-hover)] font-semibold"
+                >
                   Forgot password?
-                </Link>
+                </button>
               </div>
 
               <Button
@@ -163,16 +165,6 @@ function LoginContent() {
                 Sign In
               </Button>
             </form>
-
-            {/* Test Accounts Info */}
-            <Alert variant="info" className="mt-6">
-              <p className="font-bold mb-2">Test Accounts:</p>
-              <div className="text-xs space-y-1">
-                <p> Admin: admin@sip.com / Admin@123</p>
-                <p> Employer: employer@example.com / Employer@123</p>
-                <p> Student: student@example.com / Student@123</p>
-              </div>
-            </Alert>
 
             {/* Register Link */}
             <div className="mt-6 text-center text-sm">

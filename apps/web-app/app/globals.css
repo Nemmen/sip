@@ -155,6 +155,18 @@ body {
   outline-offset: 2px;
 }
 
+/* Smooth transitions globally */
+a, button, input, select, textarea {
+  transition-property: color, background-color, border-color, box-shadow, opacity;
+  transition-duration: 200ms;
+  transition-timing-function: ease;
+}
+
+/* Clean link underlines */
+a {
+  text-decoration: none;
+}
+
 /* Selection styling */
 ::selection {
   background: var(--accent);

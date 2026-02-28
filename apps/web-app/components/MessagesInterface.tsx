@@ -167,7 +167,7 @@ export default function MessagesPage() {
                             {conv.userName}
                           </h4>
                           {conv.unreadCount > 0 && (
-                            <span className="bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                            <span className="bg-[var(--error)] text-white text-xs w-5 h-5 flex items-center justify-center font-bold">
                               {conv.unreadCount}
                             </span>
                           )}
@@ -217,10 +217,10 @@ export default function MessagesPage() {
                               className={`flex ${isOwn ? 'justify-end' : 'justify-start'}`}
                             >
                               <div
-                                className={`max-w-[70%] rounded-lg p-3 ${
+                                className={`max-w-[70%] p-3 ${
                                   isOwn
                                     ? 'bg-[var(--primary)] text-white'
-                                    : 'bg-gray-100 text-[var(--text-primary)]'
+                                    : 'bg-[var(--background)] text-[var(--text-primary)]'
                                 }`}
                               >
                                 <p className="text-sm whitespace-pre-wrap">{message.content}</p>
@@ -254,7 +254,7 @@ export default function MessagesPage() {
                         onKeyPress={handleKeyPress}
                         placeholder="Type a message..."
                         disabled={sending}
-                        className="flex-1 px-4 py-2 border border-[var(--border)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
+                        className="flex-1 px-4 py-2.5 border-2 border-[var(--border)] focus:outline-none focus:border-[var(--accent)] transition"
                       />
                       <Button
                         variant="primary"

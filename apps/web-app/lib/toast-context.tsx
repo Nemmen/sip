@@ -120,7 +120,11 @@ function ToastItem({ toast, onClose }: { toast: Toast; onClose: () => void }) {
 
   return (
     <div
-      className={`${colors[toast.type]} rounded-lg shadow-lg p-4 flex items-start gap-3 animate-slide-in-right`}
+      className={`${colors[toast.type]} shadow-lg p-4 flex items-start gap-3 animate-slide-in-right border-l-4 ${
+        toast.type === 'success' ? 'border-l-green-700' : 
+        toast.type === 'error' ? 'border-l-red-700' : 
+        toast.type === 'warning' ? 'border-l-yellow-700' : 'border-l-blue-700'
+      }`}
       role="alert"
     >
       <div className="flex-shrink-0 mt-0.5">{icons[toast.type]}</div>
